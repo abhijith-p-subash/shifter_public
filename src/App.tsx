@@ -8,6 +8,8 @@ import Signup from './pages/auth/signup/Signup.page';
 import ProtectedRoute from './core/routes/ProtectedRoute';
 import About from './pages/about/About.page';
 import Home from './pages/home/Home.page';
+import NotFound from './pages/notFound/NotFound.page';
+
 
 
 const App: React.FC = () => {
@@ -27,9 +29,12 @@ const App: React.FC = () => {
         </Route>
 
         {/* Default Layout */}
-        <Route element={<DefaultLayout />}>
+        <Route element={<ProtectedRoute><DefaultLayout /></ProtectedRoute>}>
           <Route path="/home" element={<Home />} />
         </Route>
+
+         {/* 404 Route */}
+         <Route path="*" element={<NotFound />} />
       </Routes>
 
   );
