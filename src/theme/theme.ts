@@ -17,4 +17,8 @@ export const customTheme: CustomFlowbiteTheme = {
     //     base: "hover:text-brightBlue-400",
     //   }
     // },
+
+    textInput: {
+      
+    },
   };

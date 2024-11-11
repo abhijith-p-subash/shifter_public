@@ -5,7 +5,7 @@ import { Card } from "flowbite-react";
 import { FaHouse } from "react-icons/fa6";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { LuPackageOpen } from "react-icons/lu";
-import { FaTruckLoading, FaTruckMoving,FaWarehouse } from "react-icons/fa";
+import { FaTruckLoading, FaTruckMoving, FaWarehouse } from "react-icons/fa";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const Home = () => {
               </div> */}
               <div
                 className="hover:cursor-pointer inline-block group"
-                onClick={() => navigate("/about")}
+                onClick={() => navigate("/help-me-to-shift")}
               >
                 <h1 className="text-5xl md:text-8xl font-bold ">
                   <span className="group-hover:text-white text-softYellow-500 transition-colors duration-300">
@@ -115,7 +115,10 @@ const Home = () => {
               handling every aspect of your relocation with professionalism and
               respect for your belongings.
             </p>
-            <button className="mt-8 px-6 py-3 bg-softYellow-500 text-white font-bold rounded-full hover:bg-softYellow-700 transition duration-300">
+            <button
+              className="mt-8 px-6 py-3 bg-softYellow-500 text-white font-bold rounded-full hover:bg-softYellow-700 transition duration-300"
+              onClick={() => navigate("/get-price")}
+            >
               Get Prices
             </button>
           </div>
@@ -223,72 +226,78 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <FaHouse className="text-center text-5xl"/>
+              <FaHouse className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Home Shifting
+                Home Shifting
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Safe and efficient transportation of all your household items, from furniture to fragile belongings.
+              Safe and efficient transportation of all your household items,
+              from furniture to fragile belongings.
             </p>
           </Card>
 
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <HiBuildingOffice2 className="text-center text-5xl"/>
+              <HiBuildingOffice2 className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Office Relocation
+                Office Relocation
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Hassle-free office moves, ensuring minimal downtime and smooth transitions.
+              Hassle-free office moves, ensuring minimal downtime and smooth
+              transitions.
             </p>
           </Card>
 
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <LuPackageOpen className="text-center text-5xl"/>
+              <LuPackageOpen className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Packing and Unpacking
+                Packing and Unpacking
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Professional packing services to secure your items and organized unpacking at your new location.
+              Professional packing services to secure your items and organized
+              unpacking at your new location.
             </p>
           </Card>
 
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <FaTruckLoading className="text-center text-5xl"/>
+              <FaTruckLoading className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Loading and Unloading
+                Loading and Unloading
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Trained staff handle the heavy lifting with care, ensuring no damage during transit.
+              Trained staff handle the heavy lifting with care, ensuring no
+              damage during transit.
             </p>
           </Card>
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <FaTruckMoving className="text-center text-5xl"/>
+              <FaTruckMoving className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Vehicle Transportation
+                Vehicle Transportation
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Safe and reliable transport for your car or bike, no matter the distance.
+              Safe and reliable transport for your car or bike, no matter the
+              distance.
             </p>
           </Card>
-        
+
           <Card className="max-w-sm" horizontal>
             <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500">
-              <FaWarehouse className="text-center text-5xl"/>
+              <FaWarehouse className="text-center text-5xl" />
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Storage Solutions
+                Storage Solutions
               </h5>
             </div>
             <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-            Short or long-term storage options in secure, monitored facilities for your belongings.
+              Short or long-term storage options in secure, monitored facilities
+              for your belongings.
             </p>
           </Card>
         </div>
