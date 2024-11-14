@@ -6,10 +6,10 @@ interface PublicRouteProps {
 }
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('authToken'); // Example: check if token exists
+  const isAuthenticated = localStorage.getItem('authToken'); // Check if the user is logged in
 
-  if (isAuthenticated) {
-    return <Navigate to="/home" replace />;
+  if (isAuthenticated && (window.location.pathname === '/login' || window.location.pathname === '/signup')) {
+    return <Navigate to="/home" replace />; // Redirect logged-in users away from login/signup
   }
 
   return <>{children}</>;

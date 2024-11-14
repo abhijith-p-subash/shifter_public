@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <div>
       {/* FRIST SECTION */}
-      <div className="relative w-full min-h-screen flex items-center justify-center">
+      <div className="relative w-full min-h-screen flex items-center justify-center ">
         {/* Background Image with Fade to White */}
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -29,7 +29,7 @@ const Home = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col lg:flex-row justify-center items-center h-full container mx-auto p-4">
+        <div className="relative z-10 flex flex-col lg:flex-row justify-center items-center h-full container mx-auto p-4 mt-20">
           {/* Left Side Content */}
           <div className="lg:w-1/2 p-8">
             {/* Header Section */}
@@ -119,7 +119,7 @@ const Home = () => {
               className="mt-8 px-6 py-3 bg-softYellow-500 text-white font-bold rounded-full hover:bg-softYellow-700 transition duration-300"
               onClick={() => navigate("/get-price")}
             >
-              Get Prices
+              Get Price
             </button>
           </div>
         </div>

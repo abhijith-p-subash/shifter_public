@@ -17,22 +17,6 @@ const moreLinks = [
     title: "About",
     url: "about",
   },
-  // {
-  //   title: "Contact",
-  //   url: "contact",
-  // },
-  // {
-  //   title: "Advertise",
-  //   url: "advertise",
-  // },
-  // {
-  //   title: "Privacy Policy",
-  //   url: "privacy-policy",
-  // },
-  // {
-  //   title: "Login",
-  //   url: "login",
-  // },
 ];
 
 const Header = () => {
@@ -40,30 +24,58 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = location;
 
+  // const handleLogout = () => {
+  //   // Remove token from localStorage and sessionStorage
+  //   localStorage.removeItem("authToken");
+  //   sessionStorage.removeItem("authToken");
+
+  //   // Redirect to login page
+  //   navigate("/login");
+  // };
+
   return (
-    <Navbar fluid className="conatiner mx-auto">
+    <div className="min-w-full flex justify-center items-center ">
+      <Navbar
+      fluid
+      className="container mx-auto bg-white text-white"
+      rounded={true}
+    >
       <NavbarBrand onClick={() => navigate("/home")}>
-        <img
+       <div className="flex items-center justify-center bg-brightBlue-800 px-2 rounded-full">
+         <img
           src="src/assets/truck.svg"
-          className="mr-3 h-8 sm:h-9"
-          alt="Flowbite React Logo"
+          className="mr-1 h-8 sm:h-9"
+          alt="Shifter Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white bg-gradient-to-r from-brightBlue-500 via-softYellow-500 to-brightBlue-500 inline-block text-transparent bg-clip-text">
           Shifter
         </span>
+       </div>
       </NavbarBrand>
+
       <div className="flex md:order-2">
-        <Button color="primary">Get started</Button>
+        <Button onClick={() => navigate("/get-price")} color="primary" className="mx-6 bg-brightBlue-500 hover:bg-brightBlue-600">
+        Get Price
+        </Button>
+        {/* <Button color="red" onClick={handleLogout}>
+          Logout
+        </Button> */}
         <NavbarToggle />
       </div>
-      <NavbarCollapse>
+
+      <NavbarCollapse className="md:ml-auto">
         {moreLinks.map((link) => (
-          <NavbarLink active={pathname.includes(link.url)} key={link.url}>
+          <NavbarLink
+            active={pathname.includes(link.url)}
+            key={link.url}
+            className="text-darkBlue-500 hover:text-brightBlue-500"
+          >
             <Link to={link.url}>{link.title}</Link>
           </NavbarLink>
         ))}
       </NavbarCollapse>
     </Navbar>
+    </div>
   );
 };
 
