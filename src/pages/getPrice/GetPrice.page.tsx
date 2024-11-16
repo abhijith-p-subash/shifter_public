@@ -4,6 +4,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput, Button, Label } from "flowbite-react";
 
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../core/firebase/firebase";
+// Adjust the path as needed
+
+
 // Define validation schema using Zod
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -20,15 +25,24 @@ const GetPrice: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }, reset
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = async (data: FormData) => {
+    try {
+      // Save data to Firestore
+      const docRef = await addDoc(collection(db, "quotes"), data);
+      console.log("Document written with ID: ", docRef.id);
+      alert("Form submitted successfully!");
+      reset()
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      alert("An error occurred while submitting the form. Please try again.");
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20">
@@ -118,7 +132,7 @@ const GetPrice: React.FC = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-darkBlue-500 text-white hover:bg-darkBlue-600">
+              <Button type="submit" color='primary'  className="w-full text-white ">
                 Get Price
               </Button>
             </form>
