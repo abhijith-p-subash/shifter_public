@@ -1,48 +1,80 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput, Button, Label } from "flowbite-react";
+import { toast } from "react-toastify";
 
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../core/firebase/firebase";
-// Adjust the path as needed
 
+import { tailChase } from "ldrs";
+
+tailChase.register();
 
 // Define validation schema using Zod
 const schema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Name is required").max(50, "Maximum 50 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  locationFrom: z.string().min(1, "Starting location is required"),
-  locationTo: z.string().min(1, "Destination is required"),
+  phone: z
+    .string()
+    .regex(/^\d+$/, "Phone number must contain only numbers")
+    .min(10, "Enter a valid phone number")
+    .max(10, "Enter a valid phone number"),
+  locationFrom: z
+    .string()
+    .min(1, "Starting location is required")
+    .max(50, "Maximum 50 characters"),
+  locationTo: z
+    .string()
+    .min(1, "Destination is required")
+    .max(50, "Maximum 50 characters"),
   date: z.string().min(1, "Date is required"),
 });
 
 type FormData = z.infer<typeof schema>;
 
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timer: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 const GetPrice: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
-    formState: { errors }, reset
+    formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = debounce(async (data: FormData) => {
     try {
-      // Save data to Firestore
+      setLoading(true);
+      // showLoader(); // showLoader loader
       const docRef = await addDoc(collection(db, "quotes"), data);
       console.log("Document written with ID: ", docRef.id);
-      alert("Form submitted successfully!");
-      reset()
+      toast.success("We will get back to you!");
+      reset();
     } catch (e) {
       console.error("Error adding document: ", e);
-      alert("An error occurred while submitting the form. Please try again.");
+      toast.error("An error occurred while submitting the form.");
+    } finally {
+      // hideLoader(); // hideLoader loader
+      setLoading(false);
     }
-  };
-  
+  }, 500);
+
+  const minDate = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20">
@@ -54,7 +86,9 @@ const GetPrice: React.FC = () => {
               Get an Instant Moving Quote
             </h1>
             <p className="text-lg text-gray-700 mb-8 max-w-md">
-              Planning your move? Fill out the form below and get a quick estimate for your upcoming shift. It's fast, simple, and transparent!
+              Planning your move? Fill out the form below and get a quick
+              estimate for your upcoming shift. It's fast, simple, and
+              transparent!
             </p>
 
             <form
@@ -69,6 +103,7 @@ const GetPrice: React.FC = () => {
                   {...register("name")}
                   color={errors.name ? "failure" : "primary"}
                   helperText={errors.name?.message}
+                  disabled={loading}
                 />
               </div>
 
@@ -81,6 +116,7 @@ const GetPrice: React.FC = () => {
                   {...register("email")}
                   color={errors.email ? "failure" : "primary"}
                   helperText={errors.email?.message}
+                  disabled={loading}
                 />
               </div>
 
@@ -89,10 +125,12 @@ const GetPrice: React.FC = () => {
                 <TextInput
                   id="phone"
                   type="tel"
+                  max={10}
                   placeholder="Enter your phone number"
                   {...register("phone")}
                   color={errors.phone ? "failure" : "primary"}
                   helperText={errors.phone?.message}
+                  disabled={loading}
                 />
               </div>
 
@@ -105,6 +143,7 @@ const GetPrice: React.FC = () => {
                   {...register("locationFrom")}
                   color={errors.locationFrom ? "failure" : "primary"}
                   helperText={errors.locationFrom?.message}
+                  disabled={loading}
                 />
               </div>
 
@@ -117,6 +156,7 @@ const GetPrice: React.FC = () => {
                   {...register("locationTo")}
                   color={errors.locationTo ? "failure" : "primary"}
                   helperText={errors.locationTo?.message}
+                  disabled={loading}
                 />
               </div>
 
@@ -129,11 +169,26 @@ const GetPrice: React.FC = () => {
                   {...register("date")}
                   color={errors.date ? "failure" : "primary"}
                   helperText={errors.date?.message}
+                  min={minDate}
+                  disabled={loading}
                 />
               </div>
 
-              <Button type="submit" color='primary'  className="w-full text-white ">
-                Get Price
+              <Button
+                type="submit"
+                color="primary"
+                className="w-full text-white"
+                disabled={loading}
+              >
+                {loading ? (
+                  <l-tail-chase
+                    size="20"
+                    speed="1.75"
+                    color="white"
+                  ></l-tail-chase>
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </form>
           </div>
@@ -166,11 +221,15 @@ const GetPrice: React.FC = () => {
               Stress-Free Moving, Simplified!
             </h2>
             <p className="text-lg text-gray-600 mt-4 max-w-md">
-              With our transparent pricing and hassle-free process, your moving experience will be seamless and worry-free. Let us take the stress off your shoulders!
+              With our transparent pricing and hassle-free process, your moving
+              experience will be seamless and worry-free. Let us take the stress
+              off your shoulders!
             </p>
 
             <div className="mt-8">
-              <h3 className="text-2xl font-semibold text-softYellow-500 mb-4">Why Choose Us?</h3>
+              <h3 className="text-2xl font-semibold text-softYellow-500 mb-4">
+                Why Choose Us?
+              </h3>
               <ul className="list-disc list-inside text-gray-600">
                 <li>Fast and accurate pricing estimates</li>
                 <li>Professional and experienced movers</li>
