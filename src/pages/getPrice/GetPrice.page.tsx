@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
+import moment from "moment";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +11,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../core/firebase/firebase";
 
 import { tailChase } from "ldrs";
-
 tailChase.register();
 
 // Define validation schema using Zod
@@ -63,7 +63,7 @@ const GetPrice: React.FC = () => {
       // showLoader(); // showLoader loader
       const docRef = await addDoc(collection(db, "quotes"), data);
       console.log("Document written with ID: ", docRef.id);
-      toast.success("We will get back to you!");
+      toast.success("We will get back to you soon 👍");
       reset();
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -74,10 +74,10 @@ const GetPrice: React.FC = () => {
     }
   }, 500);
 
-  const minDate = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
+  const minDate = moment().format("YYYY-MM-DD"); // Today's date in YYYY-MM-DD format
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20 lg:mt-0">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left Side: Form and Content */}
@@ -95,83 +95,85 @@ const GetPrice: React.FC = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="bg-white p-8 rounded-lg shadow-xl w-full space-y-6"
             >
-              <div>
-                <Label htmlFor="name" value="Name" />
-                <TextInput
-                  id="name"
-                  placeholder="Enter your name"
-                  {...register("name")}
-                  color={errors.name ? "failure" : "primary"}
-                  helperText={errors.name?.message}
-                  disabled={loading}
-                />
-              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
+                <div className="col-span-6 ">
+                  <Label htmlFor="name" value="Name" />
+                  <TextInput
+                    id="name"
+                    placeholder="Enter your name"
+                    {...register("name")}
+                    color={errors.name ? "failure" : "primary"}
+                    helperText={errors.name?.message}
+                    disabled={loading}
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="email" value="Email" />
-                <TextInput
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  {...register("email")}
-                  color={errors.email ? "failure" : "primary"}
-                  helperText={errors.email?.message}
-                  disabled={loading}
-                />
-              </div>
+                <div className="col-span-6">
+                  <Label htmlFor="email" value="Email" />
+                  <TextInput
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    {...register("email")}
+                    color={errors.email ? "failure" : "primary"}
+                    helperText={errors.email?.message}
+                    disabled={loading}
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="phone" value="Phone" />
-                <TextInput
-                  id="phone"
-                  type="tel"
-                  max={10}
-                  placeholder="Enter your phone number"
-                  {...register("phone")}
-                  color={errors.phone ? "failure" : "primary"}
-                  helperText={errors.phone?.message}
-                  disabled={loading}
-                />
-              </div>
+                <div className="col-span-6">
+                  <Label htmlFor="phone" value="Phone" />
+                  <TextInput
+                    id="phone"
+                    type="tel"
+                    max={10}
+                    placeholder="Enter your phone number"
+                    {...register("phone")}
+                    color={errors.phone ? "failure" : "primary"}
+                    helperText={errors.phone?.message}
+                    disabled={loading}
+                  />
+                </div>
 
-              {/* Location From Input */}
-              <div>
-                <Label htmlFor="locationFrom" value="Location From" />
-                <TextInput
-                  id="locationFrom"
-                  placeholder="Enter starting location"
-                  {...register("locationFrom")}
-                  color={errors.locationFrom ? "failure" : "primary"}
-                  helperText={errors.locationFrom?.message}
-                  disabled={loading}
-                />
-              </div>
+                {/* Location From Input */}
+                <div className="lg:col-span-2 col-span-6">
+                  <Label htmlFor="locationFrom" value="Location From" />
+                  <TextInput
+                    id="locationFrom"
+                    placeholder="Enter starting location"
+                    {...register("locationFrom")}
+                    color={errors.locationFrom ? "failure" : "primary"}
+                    helperText={errors.locationFrom?.message}
+                    disabled={loading}
+                  />
+                </div>
 
-              {/* Location To Input */}
-              <div>
-                <Label htmlFor="locationTo" value="Location To" />
-                <TextInput
-                  id="locationTo"
-                  placeholder="Enter destination location"
-                  {...register("locationTo")}
-                  color={errors.locationTo ? "failure" : "primary"}
-                  helperText={errors.locationTo?.message}
-                  disabled={loading}
-                />
-              </div>
+                {/* Location To Input */}
+                <div className="lg:col-span-2 col-span-6">
+                  <Label htmlFor="locationTo" value="Location To" />
+                  <TextInput
+                    id="locationTo"
+                    placeholder="Enter destination location"
+                    {...register("locationTo")}
+                    color={errors.locationTo ? "failure" : "primary"}
+                    helperText={errors.locationTo?.message}
+                    disabled={loading}
+                  />
+                </div>
 
-              {/* Date Input */}
-              <div>
-                <Label htmlFor="date" value="Date" />
-                <TextInput
-                  id="date"
-                  type="date"
-                  {...register("date")}
-                  color={errors.date ? "failure" : "primary"}
-                  helperText={errors.date?.message}
-                  min={minDate}
-                  disabled={loading}
-                />
+                {/* Date Input */}
+                <div className="lg:col-span-2 col-span-6">
+                  <Label htmlFor="date" value="Date" />
+                  <TextInput
+                    id="date"
+                    type="date"
+                    {...register("date")}
+                    color={errors.date ? "failure" : "primary"}
+                    helperText={errors.date?.message}
+                    min={minDate}
+                    disabled={loading}
+                  />
+                </div>
               </div>
 
               <Button
