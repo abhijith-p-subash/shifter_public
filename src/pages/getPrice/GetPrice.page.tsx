@@ -47,6 +47,7 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
 
 const GetPrice: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const minDate = moment().format("YYYY-MM-DD");
 
   const {
     register,
@@ -63,18 +64,20 @@ const GetPrice: React.FC = () => {
       // showLoader(); // showLoader loader
       const docRef = await addDoc(collection(db, "quotes"), data);
       console.log("Document written with ID: ", docRef.id);
-      toast.success("We will get back to you soon 👍");
+      toast.success("We will get back to you soon 👍", { autoClose: 5000 });
       reset();
     } catch (e) {
       console.error("Error adding document: ", e);
-      toast.error("An error occurred while submitting the form.");
+      toast.error("An error occurred while submitting the form.", {
+        autoClose: 5000,
+      });
     } finally {
       // hideLoader(); // hideLoader loader
       setLoading(false);
     }
   }, 500);
 
-  const minDate = moment().format("YYYY-MM-DD"); // Today's date in YYYY-MM-DD format
+  // Today's date in YYYY-MM-DD format
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20 lg:mt-0">

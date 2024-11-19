@@ -1,0 +1,139 @@
+  <div className="mb-4">
+            <Label htmlFor="name">Name</Label>
+            <TextInput
+              id="name"
+              placeholder="Enter your name"
+              {...register("name")}
+              color={errors.name ? "failure" : "primary"}
+              helperText={errors.name?.message}
+              disabled={loading}
+            />
+          </div>
+
+        
+          <div className="mb-4">
+            <Label htmlFor="email">Email</Label>
+            <TextInput
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              {...register("email")}
+              color={errors.email ? "failure" : "primary"}
+              helperText={errors.email?.message}
+              disabled={loading}
+            />
+          </div>
+
+         
+          <div className="mb-4">
+            <Label htmlFor="phone">Phone Number</Label>
+            <TextInput
+              id="phone"
+              type="tel"
+              placeholder="Enter your phone number"
+              {...register("phone")}
+              color={errors.phone ? "failure" : "primary"}
+              helperText={errors.phone?.message}
+              disabled={loading}
+            />
+          </div>
+
+ 
+          <div className="mb-4">
+            <Label>Property Type</Label>
+            <select
+              {...register("propertyType")}
+              className="w-full border rounded-lg p-2"
+              disabled={loading}
+            >
+              <option value="1BHK">1BHK</option>
+              <option value="2BHK">2BHK</option>
+              <option value="3BHK">3BHK</option>
+              <option value="3+BHK">3+BHK</option>
+              <option value="Deluxe Villa">Deluxe Villa</option>
+              <option value="Vehicle">Vehicle</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+    
+          <div className="mb-4">
+            <Label>Relocation Details</Label>
+            <TextInput
+              placeholder="Starting location"
+              {...register("locationFrom")}
+              color={errors.locationFrom ? "failure" : "primary"}
+              helperText={errors.locationFrom?.message}
+              disabled={loading}
+            />
+            <TextInput
+              placeholder="Destination location"
+              {...register("locationTo")}
+              color={errors.locationTo ? "failure" : "primary"}
+              helperText={errors.locationTo?.message}
+              disabled={loading}
+            />
+          </div>
+
+    
+          <div className="mb-4">
+            <Label>Date</Label>
+            <TextInput
+              type="date"
+              {...register("date")}
+              color={errors.date ? "failure" : "primary"}
+              helperText={errors.date?.message}
+              disabled={loading}
+            />
+          </div>
+
+        
+          <div className="mb-4">
+            <Label>Current Floor</Label>
+            <select
+              {...register("currentFloor")}
+              className="w-full border rounded-lg p-2"
+              disabled={loading}
+            >
+              {arr.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+
+            <Label>Service Lift Availability</Label>
+            <select
+              {...register("serviceLiftFrom")}
+              className="w-full border rounded-lg p-2"
+              disabled={loading}
+            >
+              <option value="Available">Available</option>
+              <option value="Not Available">Not Available</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <Label>Destination Floor</Label>
+            <select
+              {...register("destinationFloor")}
+              className="w-full border rounded-lg p-2"
+              disabled={loading}
+            >
+              {arr.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+
+            <Label>Service Lift Availability</Label>
+            <select
+              {...register("serviceLiftTo")}
+              className="w-full border rounded-lg p-2"
+              disabled={loading}
+            >
+              <option value="Available">Available</option>
+              <option value="Not Available">Not Available</option>
+            </select>
+          </div>
