@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import DOMPurify from "dompurify";
 import { tailChase } from "ldrs";
+import MetaTags from "../../components/MetaTags";
 tailChase.register();
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
@@ -67,8 +68,19 @@ const Shifter: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const minDate = moment().add(3, "days").format("YYYY-MM-DD");
-
   const [captchaVerified, setCaptchaVerified] = useState(false);
+
+  const pageData = {
+    title: "House Shifting Details - Transparent Pricing & Reliable Movers",
+    description:
+      "Learn more about the house shifting process, our services, and how we make your move stress-free and easy. Transparent pricing and professional movers ensure a seamless experience.",
+    imageUrl: "/assets/img/couple-sorting-carton-boxes.webp", // Ensure the image is in the public folder
+    url: window.location.href,
+    keywords: "house shifting, moving process, reliable movers, transparent pricing, stress-free moving, professional movers",
+    hashtags: "#HouseShifting #ReliableMovers #MovingDetails #StressFreeMove #TransparentPricing",
+  };
+  
+
 
   const handleCaptchaChange = (value: string | null) => {
     if (value) {
@@ -131,6 +143,8 @@ const Shifter: React.FC = () => {
   ];
 
   return (
+   <>
+    <MetaTags {...pageData} />
     <div className="relative overflow-x-hidden">
       {/* Blurry Animated Background Shapes */}
       <div className="absolute inset-0 -z-10">
@@ -361,6 +375,7 @@ const Shifter: React.FC = () => {
         </div>
       </div>
     </div>
+   </>
   );
 };
 

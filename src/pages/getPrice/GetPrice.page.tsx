@@ -13,6 +13,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../core/firebase/firebase";
 
 import { tailChase } from "ldrs";
+import MetaTags from "../../components/MetaTags";
 tailChase.register();
 
 // const RECAPTCHA_SITE_KEY = "6LeW64MqAAAAABcHgp9ubIqv8xKxT4I-xNap6eMA";
@@ -53,8 +54,18 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
 const GetPrice: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const minDate = moment().format("YYYY-MM-DD");
-
   const [captchaVerified, setCaptchaVerified] = useState(false);
+
+  const pageData = {
+    title: "Get an Instant House Shifting Quote - Quick & Accurate Pricing",
+    description:
+      "Fill out the form to get an instant price estimate for your house move. No hidden fees, just transparent and affordable pricing.",
+    imageUrl: "/assets/img/couple-sorting-carton-boxes.webp", // Ensure the image is in the public folder
+    url: window.location.href,
+    keywords: "house shifting, moving quote, instant price estimate, affordable pricing, moving services",
+    hashtags: "#HouseShifting #MovingQuote #InstantEstimate #AffordablePricing #StressFreeMove",
+  };
+  
 
   const handleCaptchaChange = (value: string | null) => {
     if (value) {
@@ -103,6 +114,8 @@ const GetPrice: React.FC = () => {
   }, 500);
 
   return (
+    <>
+      <MetaTags {...pageData} />
     <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20 ">
       {/* Background animated shapes */}
       <div className="absolute inset-0 overflow-hidden">
@@ -275,6 +288,7 @@ const GetPrice: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

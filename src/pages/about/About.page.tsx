@@ -1,5 +1,19 @@
+import MetaTags from "../../components/MetaTags";
+
 const About = () => {
+  const pageData = {
+    title: "About Us - Reliable House Shifting Services",
+    description:
+      "Learn more about our house shifting services and how we can help you with a stress-free move.",
+    imageUrl: "/assets/img/couple-sorting-carton-boxes.webp", // Ensure the image is in the public folder
+    url: window.location.href,
+    keywords: "house shifting, moving services, reliable movers, stress-free move, house relocation",
+    hashtags: "#HouseShifting #MovingServices #StressFreeMove #ReliableMovers", // Add relevant hashtags
+  };
+  
   return (
+   <>
+   <MetaTags {...pageData} />
     <div className="relative w-full min-h-screen py-8 px-4 md:px-8 mt-20 overflow-hidden bg-gray-50">
       {/* Background Shapes */}
       <div className="absolute inset-0">
@@ -38,6 +52,7 @@ const About = () => {
         </div>
       </div>
     </div>
+   </>
   );
 };
 
