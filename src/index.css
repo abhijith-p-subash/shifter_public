@@ -1,6 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Your+Font+Name:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Tailwind Typography Example */
+h1 {
+  @apply font-extrabold text-5xl md:text-8xl leading-tight tracking-wide;
+}
+
+p {
+  @apply text-lg md:text-xl text-gray-400  leading-relaxed;
+}
+
+button {
+  @apply px-6 py-3 rounded-full font-semibold transition-all shadow-lg;
+}
+
 
 /* Style the scrollbar */
 ::-webkit-scrollbar {

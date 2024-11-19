@@ -1,5 +1,5 @@
 import {
-  Button,
+  // Button,
   Navbar,
   NavbarBrand,
   NavbarCollapse,
@@ -54,9 +54,15 @@ const Header = () => {
       </NavbarBrand>
 
       <div className="flex md:order-2">
-        <Button onClick={() => navigate("/get-price")} color="primary" className="mx-6 bg-brightBlue-500 hover:bg-brightBlue-600">
+        {/* <Button onClick={() => navigate("/get-price")} color="primary" className="mx-6 bg-brightBlue-500 hover:bg-brightBlue-600">
         Get Price
-        </Button>
+        </Button> */}
+        <button
+              className="ml-4 px-6 py-3 bg-gradient-to-r from-softYellow-500 to-brightBlue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              onClick={() => navigate("/get-price")}
+            >
+              Get Price
+            </button>
         {/* <Button color="red" onClick={handleLogout}>
           Logout
         </Button> */}

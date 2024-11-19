@@ -5,6 +5,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", flowbite.content()],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'], // Use Poppins as the default sans-serif font
+      },
       colors: {
         darkBlue: {
           100: '#CCE0F4',

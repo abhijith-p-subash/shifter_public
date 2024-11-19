@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^3.9.1",
     "firebase": "^11.0.1",
     "flowbite-react": "^0.10.2",
+    "framer-motion": "^11.11.17",
     "ldrs": "^1.0.2",
     "lottie-web": "^5.12.2",
     "moment": "^2.30.1",
