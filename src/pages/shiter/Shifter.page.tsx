@@ -10,9 +10,13 @@ import { db } from "../../core/firebase/firebase";
 import { HiInformationCircle } from "react-icons/hi";
 import { Alert } from "flowbite-react";
 import moment from "moment";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+import DOMPurify from "dompurify";
 import { tailChase } from "ldrs";
 tailChase.register();
+
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 // Validation schema using Zod
 const schema = z.object({
@@ -64,6 +68,14 @@ const Shifter: React.FC = () => {
   const navigate = useNavigate();
   const minDate = moment().add(3, "days").format("YYYY-MM-DD");
 
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+
+  const handleCaptchaChange = (value: string | null) => {
+    if (value) {
+      setCaptchaVerified(true);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -74,13 +86,35 @@ const Shifter: React.FC = () => {
   });
 
   const onSubmit = debounce(async (data: FormData) => {
+    if (!captchaVerified) {
+      toast.error("Please verify you are not a robot.");
+      return;
+    }
+
+    const sanitizedData = {
+      name: DOMPurify.sanitize(data.name),
+      email: DOMPurify.sanitize(data.email),
+      phone: DOMPurify.sanitize(data.phone),
+      locationFrom: DOMPurify.sanitize(data.locationFrom),
+      locationTo: DOMPurify.sanitize(data.locationTo),
+      date: DOMPurify.sanitize(data.date),
+      currentFloor: DOMPurify.sanitize(data.currentFloor),
+      serviceLiftFrom: DOMPurify.sanitize(data.serviceLiftFrom),
+      destinationFloor: DOMPurify.sanitize(data.destinationFloor),
+      serviceLiftTo: DOMPurify.sanitize(data.serviceLiftTo),
+      propertyType: DOMPurify.sanitize(data.propertyType),
+    };
+
     try {
       setLoading(true);
-      const docRef = await addDoc(collection(db, "shifterRequests"), data);
+      const docRef = await addDoc(
+        collection(db, "shifterRequests"),
+        sanitizedData
+      );
       console.log("Document written with ID: ", docRef.id);
       toast.success("We will get back to you soon 👍", { autoClose: 5000 });
       reset();
-      navigate('/home')
+      navigate("/home");
     } catch (error) {
       console.error("Error adding document: ", error);
       toast.error("An error occurred while submitting the form.", {
@@ -297,8 +331,22 @@ const Shifter: React.FC = () => {
               <div>for shifting.</div>
             </div>
 
+            <div className="mb-6">
+              <ReCAPTCHA
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={handleCaptchaChange}
+              />
+            </div>
+
             {/* Submit Button */}
-            <Button type="submit" color="primary" gradientDuoTone="purpleToBlue" size="xl" disabled={loading}>
+            <Button
+              type="submit"
+              color="primary"
+              gradientDuoTone="purpleToBlue"
+              size="xl"
+              disabled={loading}
+              className="w-28"
+            >
               {loading ? (
                 <l-tail-chase
                   size="20"

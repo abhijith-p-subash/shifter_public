@@ -103,7 +103,7 @@ const GetPrice: React.FC = () => {
   }, 500);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20 lg:mt-0">
+    <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-r from-primary to-darkBlue-500 py-10 mt-20 ">
       {/* Background animated shapes */}
       <div className="absolute inset-0 overflow-hidden">
         <svg
@@ -216,13 +216,16 @@ const GetPrice: React.FC = () => {
                   />
                 </div>
               </div>
-              <ReCAPTCHA
+             <div>
+             <ReCAPTCHA
                 sitekey={RECAPTCHA_SITE_KEY}
                 onChange={handleCaptchaChange}
               />
+             </div>
               <Button
                 type="submit"
                 color="primary"
+                gradientDuoTone="purpleToBlue" size="lg"
                 className="w-full text-white"
                 disabled={loading}
               >
