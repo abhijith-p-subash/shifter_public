@@ -14,7 +14,7 @@ h1 {
 }
 
 p {
-  @apply text-lg md:text-xl text-gray-400  leading-relaxed;
+  @apply text-lg  text-gray-400  leading-relaxed;
 }
 
 button {

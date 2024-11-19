@@ -58,7 +58,7 @@ const Header = () => {
         Get Price
         </Button> */}
         <button
-              className="ml-4 px-6 py-3 bg-gradient-to-r from-softYellow-500 to-brightBlue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              className="mx-4 px-6 py-3 bg-gradient-to-r from-softYellow-500 to-brightBlue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               onClick={() => navigate("/get-price")}
             >
               Get Price
