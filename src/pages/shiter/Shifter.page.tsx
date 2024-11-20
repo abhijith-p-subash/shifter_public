@@ -115,6 +115,9 @@ const Shifter: React.FC = () => {
       destinationFloor: DOMPurify.sanitize(data.destinationFloor),
       serviceLiftTo: DOMPurify.sanitize(data.serviceLiftTo),
       propertyType: DOMPurify.sanitize(data.propertyType),
+      created_at: moment().toISOString(), // Current timestamp for created_at
+      updated_at: moment().toISOString(), // Current timestamp for updated_at
+      status: "pending", // Default status
     };
 
     try {

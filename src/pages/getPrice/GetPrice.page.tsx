@@ -94,6 +94,9 @@ const GetPrice: React.FC = () => {
       locationFrom: DOMPurify.sanitize(data.locationFrom),
       locationTo: DOMPurify.sanitize(data.locationTo),
       date: DOMPurify.sanitize(data.date),
+      created_at: moment().toISOString(), // Current timestamp for created_at
+      updated_at: moment().toISOString(), // Current timestamp for updated_at
+      status: "pending", // Default status
     };
 
     try {
