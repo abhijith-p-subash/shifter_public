@@ -12,9 +12,11 @@ import Shifter from "./pages/shiter/Shifter.page";
 import GetPrice from "./pages/getPrice/GetPrice.page";
 import Loader from "./components/common/Loader";
 import ProtectedRoute from "./core/routes/ProtectedRoute";
-import Dashboard from "./pages/dashboard/Dashboard.page";
+import Dashboard from "./pages/admin/dashboard/Dashboard.page";
 import DashboardLayout from "./layouts/DashboardLayout";
 import { useLoader } from "./context/LoaderContext";
+import Quotes from "./pages/admin/quotes/Quotes.page";
+import ShiftDetails from "./pages/admin/shift-details/ShiftDetails.page";
 
 const App: React.FC = () => {
   // const [loading, setLoading] = useState<boolean>(true);
@@ -68,6 +70,8 @@ const App: React.FC = () => {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/quotes" element={<Quotes />} />
+          <Route path="/shift-request" element={<ShiftDetails />} />
         </Route>
 
         {/* 404 Route */}
