@@ -11,9 +11,11 @@ import {
 import { useEffect, useState } from "react";
 import { getAll } from "../../../core/firebase/firebase.service";
 import { Quote, Status } from "../../../interface/quotes";
+import moment from "moment";
 
 // Header fields for the table
 const header = [
+  "Sl. No.",
   "Name",
   "Email",
   "Phone",
@@ -51,7 +53,11 @@ const Quotes = () => {
   }, []);
 
   return (
-    <div className="bg-white m-6 rounded-lg shadow-md p-4">
+    <div className="m-6">
+     <div className="text-2xl font-bold">
+      Quotes
+     </div>
+      <div className="bg-white rounded-lg shadow-md p-4 my-4">
       <div className="overflow-x-auto">
         <Table hoverable>
           <TableHead>
@@ -65,17 +71,18 @@ const Quotes = () => {
                 key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
-                <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                 <TableCell>{index + 1 || '--'}</TableCell>
+                <TableCell className="whitespace-nowrap font-medium  dark:text-white">
                   {quote.name}
                 </TableCell>
-                <TableCell>{quote.email}</TableCell>
-                <TableCell>{quote.phone}</TableCell>
-                <TableCell>{quote.locationFrom}</TableCell>
-                <TableCell>{quote.locationTo}</TableCell>
-                <TableCell>{quote.date}</TableCell>
+                <TableCell>{quote.email || '--'}</TableCell>
+                <TableCell>{quote.phone || '--'}</TableCell>
+                <TableCell>{quote.locationFrom || '--'}</TableCell>
+                <TableCell>{quote.locationTo || '--'}</TableCell>
+                <TableCell>{moment(quote.date).format('DD MMM YYYY') || '--'}</TableCell>
                 <TableCell>
                   <span
-                    className={`px-2 py-1 text-xs font-semibold rounded-full 
+                    className={`px-2 py-1 text-xs font-semibold rounded-full uppercase
                       ${
                         quote.status === Status.PENDING
                           ? "bg-yellow-200 text-yellow-800"
@@ -127,6 +134,7 @@ const Quotes = () => {
           showIcons
         />
       </div>
+    </div>
     </div>
   );
 };
