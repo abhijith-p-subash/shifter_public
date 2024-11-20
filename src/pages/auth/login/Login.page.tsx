@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom'
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Label, TextInput, Button, Checkbox } from 'flowbite-react';
-import { auth } from '../../../core/firebase/firebase';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Label, TextInput, Button, Checkbox } from "flowbite-react";
+import { auth } from "../../../core/firebase/firebase";
+import MetaTags from "../../../components/MetaTags";
+import DOMPurify from "dompurify";
+import { toast } from "react-toastify";
+import { HiMail, HiLockClosed } from "react-icons/hi";
+
+// Utility: Debounce function for performance optimization
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timer: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
 
 // Zod schema for form validation
 const loginSchema = z.object({
@@ -16,85 +32,145 @@ const loginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
+const pageData = {
+  title: "Login",
+  description: "Login to access your dashboard and manage your account.",
+  imageUrl: "/assets/img/couple-sorting-carton-boxes.webp",
+  url: window.location.href,
+};
+
 const Login: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // React Hook Form setup with Zod validation
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
+    defaultValues: { rememberMe: false },
   });
 
-  const onSubmit = async (data: LoginFormInputs) => {
-    console.log(data);
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      
-      // Handle successful login
-      console.log('Login successful');
-      alert('Login successful');
-      
-      // Check if "Remember Me" is selected and store token accordingly
-      if (data.rememberMe) {
-        // Store in localStorage to persist even after closing the browser
-        localStorage.setItem('authToken', userCredential.user.refreshToken);
-      } else {
-        // Store in sessionStorage to persist only during the session
-        sessionStorage.setItem('authToken', userCredential.user.refreshToken);
-      }
-      navigate("/dashboard")
-    } catch (err) {
-      console.error("ERROR", err);
-      setError('Failed to log in. Please check your credentials.');
+  // Prefill email from localStorage on component mount
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("rememberedEmail");
+    if (storedEmail) {
+      setValue("email", storedEmail);
     }
-  };
+  }, [setValue]);
+
+  // Login submission handler
+  const onSubmit = debounce(async (data: LoginFormInputs) => {
+    const { email, password, rememberMe } = data;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Save or clear email in localStorage based on "Remember Me"
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
+      // Sanitize user inputs
+      const sanitizedEmail = DOMPurify.sanitize(email);
+      const sanitizedPassword = DOMPurify.sanitize(password);
+
+      // Authenticate user
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        sanitizedEmail,
+        sanitizedPassword
+      );
+
+      localStorage.setItem("authToken", userCredential.user.refreshToken);
+
+      toast.success("Login successful", { autoClose: 5000 });
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Failed to log in. Please check your credentials.");
+      toast.error("Failed to log in. Please check your credentials.", {
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, 500);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-4 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-semibold text-center">Login</h2>
-        {error && <p className="text-red-600">{error}</p>}
-        
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <Label htmlFor="email" value="Email" />
-            <TextInput
-              id="email"
-              type="email"
-              placeholder="name@example.com"
-              {...register('email')}
-              color={errors.email ? 'failure' : ''}
-            />
-            {errors.email && (
-              <p className="text-red-600">{errors.email.message}</p>
-            )}
-          </div>
+    <>
+      <MetaTags keywords={""} hashtags={""} {...pageData} />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="w-full max-w-md p-8 space-y-4 bg-white rounded-lg shadow-md mx-4">
+          <h2 className="text-3xl font-semibold text-center text-darkBlue-500">
+            Login
+          </h2>
+          {error && <p className="text-red-600 text-center">{error}</p>}
 
-          <div className="mb-4">
-            <Label htmlFor="password" value="Password" />
-            <TextInput
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              {...register('password')}
-              color={errors.password ? 'failure' : ''}
-            />
-            {errors.password && (
-              <p className="text-red-600">{errors.password.message}</p>
-            )}
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate >
+            <div className="mb-4">
+              <Label htmlFor="email" value="Email" />
+              <TextInput
+                id="email"
+                type="email"
+                sizing="lg"
+                icon={HiMail}
+                placeholder="name@example.com"
+                {...register("email")}
+                aria-invalid={!!errors.email}
+                color={errors.email ? "failure" : ""}
+                helperText={errors.email?.message}
+                disabled={loading}
+              />
+            </div>
 
-          <div className="mb-4 flex items-center">
-            <Checkbox id="rememberMe" {...register('rememberMe')} />
-            <Label htmlFor="rememberMe" className="ml-2">Remember Me</Label>
-          </div>
+            <div className="mb-4">
+              <Label htmlFor="password" value="Password" />
+              <TextInput
+                id="password"
+                type="password"
+                sizing="lg"
+                icon={HiLockClosed}
+                placeholder="••••••••"
+                {...register("password")}
+                aria-invalid={!!errors.password}
+                color={errors.password ? "failure" : ""}
+                helperText={errors.password?.message}
+                disabled={loading}
+              />
+            </div>
 
-          <Button type="submit" className="w-full" color='primary'>
-            Log In
-          </Button>
-        </form>
+            <div className="mb-4 flex items-center">
+              <Checkbox
+                id="rememberMe"
+                {...register("rememberMe")}
+                disabled={loading}
+              />
+              <Label htmlFor="rememberMe" className="ml-2">
+                Remember Me
+              </Label>
+            </div>
+
+            <Button type="submit" size="lg" className="w-full" color="primary">
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <l-tail-chase size="20" speed="1.75" color="white" />
+                  <span className="ml-2">Loading...</span>
+                </span>
+              ) : (
+                "Login"
+              )}
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

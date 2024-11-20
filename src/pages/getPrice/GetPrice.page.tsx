@@ -16,7 +16,6 @@ import { tailChase } from "ldrs";
 import MetaTags from "../../components/MetaTags";
 tailChase.register();
 
-// const RECAPTCHA_SITE_KEY = "6LeW64MqAAAAABcHgp9ubIqv8xKxT4I-xNap6eMA";
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 // Define validation schema using Zod

@@ -24,14 +24,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = location;
 
-  // const handleLogout = () => {
-  //   // Remove token from localStorage and sessionStorage
-  //   localStorage.removeItem("authToken");
-  //   sessionStorage.removeItem("authToken");
-
-  //   // Redirect to login page
-  //   navigate("/login");
-  // };
+  
 
   return (
     <div className="min-w-full flex justify-center items-center ">
@@ -63,9 +56,7 @@ const Header = () => {
             >
               Get Price
             </button>
-        {/* <Button color="red" onClick={handleLogout}>
-          Logout
-        </Button> */}
+       
         <NavbarToggle />
       </div>
 
