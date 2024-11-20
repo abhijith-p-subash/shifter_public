@@ -120,13 +120,13 @@ const DashboardLayout: React.FC = () => {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col">
         {/* Header */}
-        <header className="h-16 bg-darkBlue-500 flex justify-between items-center px-4 shadow-md gap-4">
+        <header className="h-16 bg-gray-50 flex justify-between items-center px-4 shadow-md gap-4">
           <div className="flex items-center gap-4">
             <button className="p-0 m-0" onClick={toggleSidebar}>
               {isSidebarOpen ? (
-                <RiMenu2Fill className="text-white w-6 h-6" />
+                <RiMenu2Fill className="text-darkBlue-500 w-6 h-6" />
               ) : (
-                <RiMenu3Fill className="text-white w-6 h-6" />
+                <RiMenu3Fill className="text-darkBlue-500 w-6 h-6" />
               )}
             </button>
             {/* <Link to={"/dashboard"}>
@@ -136,7 +136,7 @@ const DashboardLayout: React.FC = () => {
           <div>
             <Button
               onClick={handleLogout}
-              color="light"
+              color="red"
               size="sm"
               className="w-full"
               aria-label="Toggle Sidebar"
