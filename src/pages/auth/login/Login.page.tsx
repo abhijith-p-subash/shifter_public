@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Label, TextInput, Button, Checkbox } from "flowbite-react";
-import { auth } from "../../../core/firebase/firebase";
+import { auth } from "../../../core/firebase/firebase.config";
 import MetaTags from "../../../components/MetaTags";
 import DOMPurify from "dompurify";
 import { toast } from "react-toastify";

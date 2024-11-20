@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "flowbite-react";
 import { toast } from "react-toastify";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../core/firebase/firebase";
+import { db } from "../../core/firebase/firebase.config";
 import { HiInformationCircle } from "react-icons/hi";
 import { Alert } from "flowbite-react";
 import moment from "moment";

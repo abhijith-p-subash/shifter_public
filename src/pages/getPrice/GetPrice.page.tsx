@@ -10,7 +10,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import DOMPurify from "dompurify";
 
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../core/firebase/firebase";
+import { db } from "../../core/firebase/firebase.config";
 
 import { tailChase } from "ldrs";
 import MetaTags from "../../components/MetaTags";
