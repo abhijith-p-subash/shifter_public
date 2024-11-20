@@ -22,7 +22,7 @@ import {
     options?: {
       filters?: { field: string; operator: WhereFilterOp; value: unknown }[];
       sort?: { field: string; direction: "asc" | "desc" };
-      resultLimit?: number | 1000;
+      limit?: number | 1000;
     }
   ): Promise<T[]> => {
     const colRef = collection(db, collectionName);
@@ -35,8 +35,8 @@ import {
     if (options?.sort) {
       q = query(q, orderBy(options.sort.field, options.sort.direction));
     }
-    if (options?.resultLimit) {
-      q = query(q, limit(options.resultLimit));
+    if (options?.limit) {
+      q = query(q, limit(options.limit));
     }
   
     const snapshot = await getDocs(q);

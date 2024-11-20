@@ -33,9 +33,16 @@ const Quotes = () => {
 
   // Fetch all quotes from Firestore
   const fetchAllQuotes = async () => {
-    const quotesData = await getAll<Quote>("quotes");
-    setQuotes(quotesData);
-    console.log("QUOTES", quotesData);
+    try {
+      const quotesData = await getAll<Quote>("quotes", {
+        sort: { field: "created_at", direction: "desc" },
+        limit: 10,
+      });
+      setQuotes(quotesData);
+      console.log("QUOTES", quotesData);
+    } catch (error) {
+      console.error("Error fetching quotes:", error);
+    }
   };
 
   // Fetch data on component mount

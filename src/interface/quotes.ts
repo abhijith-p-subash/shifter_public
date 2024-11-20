@@ -15,7 +15,6 @@ export enum Status {
     COMPLETED = "completed",
     IN_PROGRESS = "in-progress",
     CANCELLED = "cancelled",
-    QUOTE_SENT = "Quote Sent",
+    QUOTE_SENT = "quote-sent",
   }
 
-  
