@@ -59,6 +59,7 @@ const Login: React.FC = () => {
     const storedEmail = localStorage.getItem("rememberedEmail");
     if (storedEmail) {
       setValue("email", storedEmail);
+      setValue("rememberMe", true);
     }
   }, [setValue]);
 
