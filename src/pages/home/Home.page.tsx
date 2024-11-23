@@ -27,6 +27,7 @@ const Home = () => {
       "#HouseShifting, #MovingServices, #AffordableMovers, #Relocation, #PriceEstimate, #MovingQuotes",
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const backgroundImages = [
     "src/assets/img/couple-sorting-carton-boxes.webp",
     "src/assets/delivery_truck.svg",
@@ -45,13 +46,12 @@ const Home = () => {
             img.onload = () => resolve(url);
 
             // Reject if an error occurs
-            img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+            img.onerror = () =>
+              reject(new Error(`Failed to load image: ${url}`));
           })
       )
     );
   };
-
-
 
   // Animation Variants
   const fadeInUp = {
@@ -98,7 +98,6 @@ const Home = () => {
     //     hideLoader(); // Hide the loader even if some images fail to load
     //   });
 
-
     try {
       preloadImages(backgroundImages);
       console.log("All images loaded successfully!");
@@ -109,10 +108,7 @@ const Home = () => {
       hideLoader();
       console.log("All images loaded failed loader hidden");
     }
-      
-  }, [backgroundImages]); // Dependency array includes the image URLs to handle dynamic changes
-
-
+  }, [backgroundImages, hideLoader, showLoader]); // Dependency array includes the image URLs to handle dynamic changes
 
   return (
     <>
