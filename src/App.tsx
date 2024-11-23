@@ -14,7 +14,7 @@ import Loader from "./components/common/Loader";
 import ProtectedRoute from "./core/routes/ProtectedRoute";
 import Dashboard from "./pages/admin/dashboard/Dashboard.page";
 import DashboardLayout from "./layouts/DashboardLayout";
-import { useLoader } from "./context/LoaderContext";
+import { useLoader } from "./core/context/LoaderContext";
 import Quotes from "./pages/admin/quotes/Quotes.page";
 import ShiftDetails from "./pages/admin/shift-details/ShiftDetails.page";
 

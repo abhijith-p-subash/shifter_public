@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
 
 import { Card } from "flowbite-react";
@@ -7,9 +8,12 @@ import { HiBuildingOffice2 } from "react-icons/hi2";
 import { LuPackageOpen } from "react-icons/lu";
 import { FaTruckLoading, FaTruckMoving, FaWarehouse } from "react-icons/fa";
 import MetaTags from "../../components/MetaTags";
+import { useLoader } from "../../core/context/LoaderContext";
+import { useEffect } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { hideLoader, showLoader } = useLoader();
 
   const pageData = {
     title: "House Shifting Services - Get an Instant Moving Quote",
@@ -19,28 +23,97 @@ const Home = () => {
     url: window.location.href,
     keywords:
       "house shifting, moving services, affordable movers, transparent pricing, relocation services, home moving quote, professional movers",
-    hashtags: "#HouseShifting, #MovingServices, #AffordableMovers, #Relocation, #PriceEstimate, #MovingQuotes",
+    hashtags:
+      "#HouseShifting, #MovingServices, #AffordableMovers, #Relocation, #PriceEstimate, #MovingQuotes",
   };
-  
+
+  const backgroundImages = [
+    "src/assets/img/couple-sorting-carton-boxes.webp",
+    "src/assets/delivery_truck.svg",
+  ];
+
+  // Function to preload images
+  const preloadImages = (imageUrls: any[]) => {
+    return Promise.all(
+      imageUrls.map(
+        (url) =>
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
+
+            // Resolve when the image is loaded
+            img.onload = () => resolve(url);
+
+            // Reject if an error occurs
+            img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+          })
+      )
+    );
+  };
+
+
 
   // Animation Variants
   const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const fadeIn = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1 } },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const staggerContainer = {
-    hidden: { opacity: 1 },
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
+      transition: { staggerChildren: 0.1 },
     },
   };
+
+  // Button Hover Animation
+  const buttonHover = {
+    hover: { scale: 1.05, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)" },
+    tap: { scale: 0.95 },
+  };
+
+  useEffect(() => {
+    showLoader(); // Display the loader when the component mounts
+
+    // Preload all images
+    // preloadImages(backgroundImages)
+    //   .then(() => {
+    //     console.log("All images loaded successfully!");
+    //     hideLoader(); // Hide the loader when images are loaded
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     hideLoader(); // Hide the loader even if some images fail to load
+    //   });
+
+
+    try {
+      preloadImages(backgroundImages);
+      console.log("All images loaded successfully!");
+      hideLoader();
+      console.log("All images loaded successfully! loader hidden");
+    } catch (error) {
+      console.error(error);
+      hideLoader();
+      console.log("All images loaded failed loader hidden");
+    }
+      
+  }, [backgroundImages]); // Dependency array includes the image URLs to handle dynamic changes
+
+
+
   return (
     <>
       <MetaTags {...pageData} />
@@ -107,6 +180,8 @@ const Home = () => {
                   {/* Feature 1 */}
                   <motion.div
                     variants={fadeInUp}
+                    initial="hidden"
+                    animate="visible"
                     className="bg-white rounded-lg p-6 flex flex-col justify-between h-full shadow-md"
                   >
                     <h1 className="text-xl font-bold bg-gradient-to-r from-darkBlue-500 to-brightBlue-500 inline-block text-transparent bg-clip-text">
@@ -176,13 +251,19 @@ const Home = () => {
           >
             Get Price
           </button> */}
-                <motion.div variants={fadeInUp}>
-                  <button
-                    className="mt-8 px-6 py-3 bg-gradient-to-r from-softYellow-500 to-brightBlue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                <motion.div
+                  variants={fadeInUp}
+                  className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
+                >
+                  <motion.button
+                    variants={buttonHover}
+                    whileHover="hover"
+                    whileTap="tap"
+                    className="mt-8 px-6 py-3 bg-gradient-to-r from-softYellow-500 to-brightBlue-500 text-white font-bold rounded-full shadow-lg transition-all duration-300"
                     onClick={() => navigate("/get-price")}
                   >
                     Get Price
-                  </button>
+                  </motion.button>
                 </motion.div>
               </motion.div>
             </div>
@@ -380,14 +461,14 @@ const Home = () => {
                 horizontal
               >
                 <div className="flex flex-col justify-center items-center gap-2 text-brightBlue-500 group-hover:text-softYellow-500">
-                  <FaWarehouse className="text-5xl transform group-hover:rotate-60 transition-transform duration-500  group-hover:rotate-12" />
+                  <FaWarehouse className="text-5xl transform group-hover:rotate-60 transition-transform duration-500 group-hover:rotate-12" />
                   <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     Storage Solutions
                   </h5>
                 </div>
                 <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
-                  Short or long-term storage options in secure, monitored
-                  facilities for your belongings.
+                  Safe and secure storage options for your belongings,
+                  short-term or long-term.
                 </p>
               </Card>
             </div>

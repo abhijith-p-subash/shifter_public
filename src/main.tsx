@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { Flowbite } from "flowbite-react";
 import { customTheme } from "./theme/theme";
 import { BrowserRouter as Router } from "react-router-dom";
-import { LoaderProvider } from "./context/LoaderContext.tsx";
+import { LoaderProvider } from "./core/context/LoaderContext.tsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
