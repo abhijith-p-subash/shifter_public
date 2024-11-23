@@ -14,6 +14,7 @@ import { db } from "../../core/firebase/firebase.config";
 
 import { tailChase } from "ldrs";
 import MetaTags from "../../components/MetaTags";
+import { useNavigate } from "react-router-dom";
 tailChase.register();
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
@@ -54,6 +55,7 @@ const GetPrice: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const minDate = moment().format("YYYY-MM-DD");
   const [captchaVerified, setCaptchaVerified] = useState(false);
+  const navigate = useNavigate();
 
   const pageData = {
     title: "Get an Instant House Shifting Quote - Quick & Accurate Pricing",
@@ -105,6 +107,7 @@ const GetPrice: React.FC = () => {
       console.log("Document written with ID: ", docRef.id);
       toast.success("We will get back to you soon 👍", { autoClose: 5000 });
       reset();
+      navigate("/");
     } catch (e) {
       console.error("Error adding document: ", e);
       toast.error("An error occurred while submitting the form.", {
