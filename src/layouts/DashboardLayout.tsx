@@ -58,7 +58,7 @@ const DashboardLayout: React.FC = () => {
   return (
     <>
       <div className="hidden md:block">
-        <div className="h-screen flex bg-gray-400 ">
+        <div className="h-screen flex bg-gray-400 overflow-hidden">
           {/* Sidebar */}
           <aside
             className={`${
@@ -130,7 +130,7 @@ const DashboardLayout: React.FC = () => {
           {/* Main Content Area */}
           <div className="flex flex-1 flex-col">
             {/* Header */}
-            <header className="h-16 bg-gray-50 flex justify-between items-center px-4 shadow-md gap-4">
+            <header className="h-16 w-full bg-gray-50 flex justify-between items-center px-4 shadow-md gap-4">
               <div className="flex items-center gap-4">
                 <button className="p-0 m-0" onClick={toggleSidebar}>
                   {isSidebarOpen ? (
@@ -158,7 +158,7 @@ const DashboardLayout: React.FC = () => {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto bg-gray-200 p-4">
+            <main className="flex-1 overflow-y-auto overflow bg-gray-200 p-4">
               <Outlet />
             </main>
           </div>
@@ -166,8 +166,8 @@ const DashboardLayout: React.FC = () => {
       </div>
 
       <div className="block md:hidden">
-        <div className="h-screen flex bg-gray-400 ">
-          <main className="flex-1 overflow-y-auto bg-gray-200 p-4">
+        <div className="h-screen flex bg-gray-400 overflow-hidden">
+          <main className="flex-1 overflow-y-auto overflow-x-auto bg-gray-200 p-4">
             
             <Outlet />
           </main>
