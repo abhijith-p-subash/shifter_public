@@ -10,12 +10,12 @@ import Home from "./pages/home/Home.page";
 import NotFound from "./pages/notFound/NotFound.page";
 import Shifter from "./pages/shiter/Shifter.page";
 import GetPrice from "./pages/getPrice/GetPrice.page";
-import Loader from "./components/common/Loader";
 import ProtectedRoute from "./core/routes/ProtectedRoute";
 import Dashboard from "./pages/admin/dashboard/Dashboard.page";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Quotes from "./pages/admin/quotes/Quotes.page";
 import ShiftDetails from "./pages/admin/shift-details/ShiftDetails.page";
+import LoaderDark from "./components/common/LoaderDark";
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   }, []);
 
   return loading ? (
-    <Loader />
+    <LoaderDark />
   ) : (
     <>
       <Routes>

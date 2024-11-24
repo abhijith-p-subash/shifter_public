@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 // context/LoaderContext.tsx
 import React, { createContext, useContext, useState } from "react";
-import Loader1 from "../../components/common/Loader1";
+import LoaderLight from "../../components/common/LoaderLight";
 
 interface LoaderContextType {
   showLoader: () => void;
@@ -20,7 +20,7 @@ export const LoaderProvider1: React.FC<{ children: React.ReactNode }> = ({ child
   return (
     <LoaderContext.Provider value={{ showLoader, hideLoader, isLoading }}>
       {children}
-      {isLoading && <Loader1 />}
+      {isLoading && <LoaderLight />}
     </LoaderContext.Provider>
   );
 };
