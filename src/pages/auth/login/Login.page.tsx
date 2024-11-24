@@ -138,7 +138,7 @@ const Login: React.FC = () => {
                 type="password"
                 sizing="lg"
                 icon={HiLockClosed}
-                placeholder="••••••••"
+                placeholder="Password"
                 {...register("password")}
                 aria-invalid={!!errors.password}
                 color={errors.password ? "failure" : ""}
