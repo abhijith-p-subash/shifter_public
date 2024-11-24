@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -14,23 +14,19 @@ import Loader from "./components/common/Loader";
 import ProtectedRoute from "./core/routes/ProtectedRoute";
 import Dashboard from "./pages/admin/dashboard/Dashboard.page";
 import DashboardLayout from "./layouts/DashboardLayout";
-import { useLoader } from "./core/context/LoaderContext";
 import Quotes from "./pages/admin/quotes/Quotes.page";
 import ShiftDetails from "./pages/admin/shift-details/ShiftDetails.page";
 
 const App: React.FC = () => {
-  // const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
-  const { loading } = useLoader();
-  const { hideLoader, showLoader } = useLoader();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
-    showLoader();
-    setTimeout(() => hideLoader(), 1000); // Simulate loading state
+    setTimeout(() => setLoading(false), 1000); // Simulate loading state
   }, []);
 
   return loading ? (

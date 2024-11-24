@@ -1,12 +1,6 @@
 import type { CustomFlowbiteTheme } from "flowbite-react";
 
 export const customTheme: CustomFlowbiteTheme = {
-  // button: {
-  //   color: {
-  //     primary: "bg-brightBlue-500 hover:bg-darkBlue-500 text-white",
-  //   },
-  // },
-
   button: {
     base: "group relative flex items-stretch justify-center p-0.5 text-center font-medium transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none",
     fullSized: "w-full",
@@ -168,7 +162,6 @@ export const customTheme: CustomFlowbiteTheme = {
       icon: "h-6 w-6 shrink-0",
     },
   },
-  textInput: {},
   checkbox: {
     root: {
       base: "h-4 w-4 rounded border border-gray-300 bg-gray-100 focus:ring-2 dark:border-gray-600 dark:bg-gray-700",
