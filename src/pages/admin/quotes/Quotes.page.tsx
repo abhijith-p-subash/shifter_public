@@ -63,8 +63,7 @@ const Quotes = () => {
     setCurrentPage(1); // Reset to the first page
   };
 
-  const fetchAllQuotes = async (page: number) => {
-    console.log("LASt", lastVisibleDocument);
+  const fetchAllQuotes = async () => {
     try {
       showLoader();
       const filters: Filters[] = selectedStatus
@@ -79,16 +78,11 @@ const Quotes = () => {
       });
 
       setLastVisibleDocument(data[data.length - 1]);
-      console.log("data", data, "count", count);
-      console.log("LASt", lastVisibleDocument);
 
       setDataSource(data);
       setTotalPages(Math.ceil(count / 10));
-      console.log("dataSource", dataSource);
-      console.log("count", count);
-      console.log("totalPages", totalPages, Math.ceil(count / 10));
     } catch (error) {
-      toast.error("Failed to fetch quotes",  );
+      toast.error("Failed to fetch quotes");
       console.error("Error fetching quotes:", error);
     } finally {
       hideLoader();
@@ -97,15 +91,18 @@ const Quotes = () => {
 
   const deleteDoc = async (id: string) => {
     try {
-      const confirmed = await showModal("failure", "Are you sure you want to delete this item?");
+      const confirmed = await showModal(
+        "failure",
+        "Are you sure you want to delete this item?"
+      );
       if (confirmed) {
-      showLoader();
-      await deleteById("quotes", id);
-      toast.success("Quote deleted successfully",  );
-      fetchAllQuotes(currentPage);
+        showLoader();
+        await deleteById("quotes", id);
+        toast.success("Quote deleted successfully");
+        fetchAllQuotes();
       }
     } catch (error) {
-      toast.error("Failed to delete quote",  );
+      toast.error("Failed to delete quote");
       console.error("Error deleting quote:", error);
     } finally {
       hideLoader();
@@ -113,7 +110,7 @@ const Quotes = () => {
   };
 
   useEffect(() => {
-    fetchAllQuotes(currentPage);
+    fetchAllQuotes();
   }, [currentPage, selectedStatus]);
 
   const renderStatusBadge = (status: Status) => (
@@ -201,7 +198,7 @@ const Quotes = () => {
                           <Button
                             size="xs"
                             color="red"
-                           onClick={() => deleteDoc(quote.id)}
+                            onClick={() => deleteDoc(quote.id)}
                           >
                             <MdDelete className="w-5 h-5" />
                           </Button>
@@ -275,7 +272,7 @@ const Quotes = () => {
                 disabled={currentPage === 1}
                 onClick={() => {
                   setCurrentPage((prev) => prev - 1);
-                  fetchAllQuotes(currentPage - 1);
+                  fetchAllQuotes();
                 }}
               >
                 Previous
@@ -288,7 +285,7 @@ const Quotes = () => {
                 disabled={currentPage === totalPages}
                 onClick={() => {
                   setCurrentPage((prev) => prev + 1);
-                  fetchAllQuotes(currentPage + 1);
+                  fetchAllQuotes();
                 }}
               >
                 Next
