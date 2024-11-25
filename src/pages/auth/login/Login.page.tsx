@@ -91,7 +91,7 @@ const Login: React.FC = () => {
 
       localStorage.setItem("authToken", userCredential.user.refreshToken);
 
-      toast.success("Login successful", { autoClose: 5000 });
+      toast.success("Login successful",  );
       navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err);

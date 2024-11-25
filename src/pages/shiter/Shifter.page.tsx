@@ -127,7 +127,7 @@ const Shifter: React.FC = () => {
         sanitizedData
       );
       console.log("Document written with ID: ", docRef.id);
-      toast.success("We will get back to you soon 👍", { autoClose: 5000 });
+      toast.success("We will get back to you soon 👍",  );
       reset();
       navigate("/home");
     } catch (error) {

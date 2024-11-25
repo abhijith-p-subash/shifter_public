@@ -105,7 +105,7 @@ const GetPrice: React.FC = () => {
       setLoading(true);
       const docRef = await addDoc(collection(db, "quotes"), sanitizedData);
       console.log("Document written with ID: ", docRef.id);
-      toast.success("We will get back to you soon 👍", { autoClose: 5000 });
+      toast.success("We will get back to you soon 👍",  );
       reset();
       navigate("/");
     } catch (e) {
