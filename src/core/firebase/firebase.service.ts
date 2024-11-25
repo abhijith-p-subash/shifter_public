@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   collection,
@@ -28,74 +29,87 @@ export const getAll = async <T>(
     limit: number;
     offset?: any;
   }
-): Promise<{ data: T[]; count: number; limit: number }> => {
+): Promise<{
+  success: boolean;
+  data: T[];
+  count: number;
+  limit: number;
+  error: Error | null;
+}> => {
   const colRef = collection(db, collectionName);
-  const limit_in = options.limit ? options.limit : 1000;
-  // Apply filters, sorting, and limits if provided
+  const limit_in = options.limit || 1000;
+
   let q = query(colRef);
-  if (options?.filters) {
+  if (options.filters) {
     q = query(
       q,
       ...options.filters.map((f) => where(f.field, f.operator, f.value))
     );
   }
-  if (options?.sort) {
+  if (options.sort) {
     q = query(q, orderBy(options.sort.field, options.sort.direction));
   }
-
-  // if(options.offset){ 
-  //   console.log("offset", options.offset);
-  //   q = query(q, startAfter(options.offset));  
-  // }
-
   if (options.offset) {
-    console.log("offset", options.offset);
     q = query(q, startAfter(options.offset as DocumentSnapshot));
   }
+  q = query(q, limit(limit_in));
 
-  if (limit_in) {
-    q = query(q, limit(limit_in));
+  try {
+    const totalCountSnapshot = await getDocs(q);
+    const totalCount = totalCountSnapshot.size;
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as T[];
+
+    return {
+      success: true,
+      data,
+      count: totalCount,
+      limit: limit_in,
+      error: null,
+    };
+  } catch (error) {
+    return { success: false, data: [], count: 0, limit: limit_in, error: error as Error };
   }
-
-  console.log("q", q);
-
-
-  const totalCountQuery = query(
-    q,
-    ...(options.filters.map((f) => where(f.field, f.operator, f.value)) || []),
-    limit(1000)
-  );
-  const totalCountSnapshot = await getDocs(totalCountQuery);
-  const totalCount = totalCountSnapshot.size;
-
-  const snapshot = await getDocs(q);
-  const data = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as T[];
-  return { data: data, count: totalCount, limit: options.limit };
 };
 
 // Get a document by ID
 export const getById = async <T>(
   collectionName: string,
   id: string
-): Promise<T | null> => {
-  const docRef = doc(db, collectionName, id);
-  const snapshot = await getDoc(docRef);
-  return snapshot.exists()
-    ? ({ id: snapshot.id, ...snapshot.data() } as T)
-    : null;
+): Promise<{ success: boolean; data: T | null; error: Error | null }> => {
+  try {
+    const snapshot = await getDoc(doc(db, collectionName, id));
+    return snapshot.exists()
+      ? {
+          success: true,
+          data: { id: snapshot.id, ...snapshot.data() } as T,
+          error: null,
+        }
+      : { success: false, data: null, error: null };
+  } catch (error) {
+    return { success: false, data: null, error: error as Error };
+  }
 };
 
 // Create a new document
 export const create = async <T extends WithFieldValue<DocumentData>>(
   collectionName: string,
   data: T
-): Promise<string> => {
-  const colRef = collection(db, collectionName);
-  const docRef = await addDoc(colRef, data);
-  return docRef.id;
+): Promise<{
+  success: boolean;
+  data: (T & { id: string }) | null;
+  error: Error | null;
+}> => {
+  try {
+    const colRef = collection(db, collectionName);
+    const docRef = await addDoc(colRef, data);
+    return { success: true, data: { ...data, id: docRef.id }, error: null };
+  } catch (error) {
+    return { success: false, data: null, error: error as Error };
+  }
 };
 
 // Update a document by ID
@@ -103,33 +117,68 @@ export const updateById = async <T>(
   collectionName: string,
   id: string,
   data: Partial<T>
-): Promise<void> => {
-  const docRef = doc(db, collectionName, id);
-  await updateDoc(docRef, data);
+): Promise<{
+  success: boolean;
+  data: Partial<T> | null;
+  error: Error | null;
+}> => {
+  try {
+    const docRef = doc(db, collectionName, id);
+    await updateDoc(docRef, data);
+    return { success: true, data, error: null };
+  } catch (error) {
+    return { success: false, data: null, error: error as Error };
+  }
 };
 
-// Update multiple documents
+// Bulk update documents
 export const updateBulk = async <T>(
   collectionName: string,
   ids: string[],
   data: Partial<T>
-): Promise<void[]> => {
-  return Promise.all(ids.map((id) => updateById(collectionName, id, data)));
+): Promise<
+  { success: boolean; data: Partial<T> | null; error: Error | null }[]
+> => {
+  const results = await Promise.all(
+    ids.map(async (id) => {
+      try {
+        await updateById(collectionName, id, data);
+        return { success: true, data, error: null };
+      } catch (error) {
+        return { success: false, data: null, error: error as Error };
+      }
+    })
+  );
+  return results;
 };
 
 // Delete a document by ID
 export const deleteById = async (
   collectionName: string,
   id: string
-): Promise<void> => {
-  const docRef = doc(db, collectionName, id);
-  await deleteDoc(docRef);
+): Promise<{ success: boolean; error: Error | null }> => {
+  try {
+    const docRef = doc(db, collectionName, id);
+    await deleteDoc(docRef);
+    return { success: true, error: null };
+  } catch (error) {
+    return { success: false, error: error as Error };
+  }
 };
 
-// Delete multiple documents
+// Bulk delete documents
 export const deleteBulk = async (
   collectionName: string,
   ids: string[]
-): Promise<void[]> => {
-  return Promise.all(ids.map((id) => deleteById(collectionName, id)));
+): Promise<{ success: boolean; id: string; error: Error | null }[]> => {
+  const deletePromises = ids.map(async (id) => {
+    try {
+      const result = await deleteById(collectionName, id);
+      return { success: true, id, error: null };
+    } catch (error) {
+      return { success: false, id, error: error as Error };
+    }
+  });
+
+  return Promise.all(deletePromises);
 };
