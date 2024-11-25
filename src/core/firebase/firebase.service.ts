@@ -14,6 +14,8 @@ import {
   WithFieldValue,
   DocumentData,
   WhereFilterOp,
+  startAfter,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase.config";
 
@@ -24,6 +26,7 @@ export const getAll = async <T>(
     filters: { field: string; operator: WhereFilterOp; value: any }[];
     sort: { field: string; direction: "asc" | "desc" };
     limit: number;
+    offset?: any;
   }
 ): Promise<{ data: T[]; count: number; limit: number }> => {
   const colRef = collection(db, collectionName);
@@ -39,9 +42,23 @@ export const getAll = async <T>(
   if (options?.sort) {
     q = query(q, orderBy(options.sort.field, options.sort.direction));
   }
+
+  // if(options.offset){ 
+  //   console.log("offset", options.offset);
+  //   q = query(q, startAfter(options.offset));  
+  // }
+
+  if (options.offset) {
+    console.log("offset", options.offset);
+    q = query(q, startAfter(options.offset as DocumentSnapshot));
+  }
+
   if (limit_in) {
     q = query(q, limit(limit_in));
   }
+
+  console.log("q", q);
+
 
   const totalCountQuery = query(
     q,

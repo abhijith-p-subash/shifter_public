@@ -5,13 +5,13 @@ import {
   TableHead,
   TableHeadCell,
   TableRow,
-  Pagination,
   Select,
   Button,
+  Tooltip,
 } from "flowbite-react";
 
 import { useEffect, useState } from "react";
-import { getAll } from "../../../core/firebase/firebase.service";
+import { deleteById, getAll } from "../../../core/firebase/firebase.service";
 import { Quote, Status } from "../../../interface/quotes";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ import { MdEdit, MdDelete, MdEmail } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useLoader } from "../../../core/context/LoaderContext";
 import { Filters } from "../../../interface/core";
+import { useModal } from "../../../core/context/ModalContext";
 
 const header = [
   "Sl. No.",
@@ -47,9 +48,11 @@ const Quotes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [lastVisibleDocument, setLastVisibleDocument] = useState<Quote | null>(
+    null
+  );
   const { showLoader, hideLoader } = useLoader();
-
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const { showModal } = useModal();
 
   const onFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStatus(e.target.value);
@@ -57,10 +60,11 @@ const Quotes = () => {
 
   const resetFilters = () => {
     setSelectedStatus("");
-    fetchAllQuotes();
+    setCurrentPage(1); // Reset to the first page
   };
 
-  const fetchAllQuotes = async () => {
+  const fetchAllQuotes = async (page: number) => {
+    console.log("LASt", lastVisibleDocument);
     try {
       showLoader();
       const filters: Filters[] = selectedStatus
@@ -71,20 +75,45 @@ const Quotes = () => {
         filters,
         sort: { field: "created_at", direction: "desc" },
         limit: 10,
+        offset: lastVisibleDocument,
       });
+
+      setLastVisibleDocument(data[data.length - 1]);
+      console.log("data", data, "count", count);
+      console.log("LASt", lastVisibleDocument);
 
       setDataSource(data);
       setTotalPages(Math.ceil(count / 10));
+      console.log("dataSource", dataSource);
+      console.log("count", count);
+      console.log("totalPages", totalPages, Math.ceil(count / 10));
     } catch (error) {
-      toast.error("Failed to fetch quotes", { autoClose: 5000 });
+      toast.error("Failed to fetch quotes",  );
       console.error("Error fetching quotes:", error);
     } finally {
       hideLoader();
     }
   };
 
+  const deleteDoc = async (id: string) => {
+    try {
+      const confirmed = await showModal("failure", "Are you sure you want to delete this item?");
+      if (confirmed) {
+      showLoader();
+      await deleteById("quotes", id);
+      toast.success("Quote deleted successfully",  );
+      fetchAllQuotes(currentPage);
+      }
+    } catch (error) {
+      toast.error("Failed to delete quote",  );
+      console.error("Error deleting quote:", error);
+    } finally {
+      hideLoader();
+    }
+  };
+
   useEffect(() => {
-    fetchAllQuotes();
+    fetchAllQuotes(currentPage);
   }, [currentPage, selectedStatus]);
 
   const renderStatusBadge = (status: Status) => (
@@ -102,11 +131,12 @@ const Quotes = () => {
       <div className="text-2xl font-bold mb-4">Quotes</div>
       <div className="bg-white rounded-lg shadow-md p-4">
         {/* Filter Section */}
-        <div className="flex flex-wrap gap-4 mb-4">
+        <div className="flex flex-wrap gap-4 mb-6 ">
           <Select
             id="filter"
             required
-            className="w-full sm:w-[200px] rounded-md"
+            color="light"
+            className="w-full sm:w-[300px] rounded-md"
             value={selectedStatus}
             onChange={onFilterChange}
           >
@@ -117,7 +147,7 @@ const Quotes = () => {
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
           </Select>
-          <Button outline color="primary" onClick={resetFilters}>
+          <Button color="light" onClick={resetFilters}>
             Clear
           </Button>
         </div>
@@ -149,27 +179,33 @@ const Quotes = () => {
                     <TableCell>{renderStatusBadge(quote.status)}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Button
-                          size="xs"
-                          color="primary"
-                          onClick={() => navigate(`/quotes/${quote.id}`)}
-                        >
-                          <MdEdit className="w-5 h-5" />
-                        </Button>
-                        <Button
-                          size="xs"
-                          color="green"
-                          onClick={() => navigate(`/quotes/${quote.id}`)}
-                        >
-                          <MdEmail className="w-5 h-5" />
-                        </Button>
-                        <Button
-                          size="xs"
-                          color="red"
-                          onClick={() => navigate(`/quotes/${quote.id}`)}
-                        >
-                          <MdDelete className="w-5 h-5" />
-                        </Button>
+                        <Tooltip content="Edit">
+                          <Button
+                            size="xs"
+                            color="light"
+                            onClick={() => navigate(`/quotes/${quote.id}`)}
+                          >
+                            <MdEdit className="w-5 h-5" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip content="Send Quotes">
+                          <Button
+                            size="xs"
+                            color="green"
+                            onClick={() => navigate(`/quotes/${quote.id}`)}
+                          >
+                            <MdEmail className="w-5 h-5" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip content="Delete">
+                          <Button
+                            size="xs"
+                            color="red"
+                           onClick={() => deleteDoc(quote.id)}
+                          >
+                            <MdDelete className="w-5 h-5" />
+                          </Button>
+                        </Tooltip>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -186,7 +222,7 @@ const Quotes = () => {
         </div>
 
         {/* Card View for Small Screens */}
-        <div className="block lg:hidden">
+        <div className="block lg:hidden mb-10">
           {dataSource.length > 0 ? (
             dataSource.map((quote) => (
               <div
@@ -229,14 +265,55 @@ const Quotes = () => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-6">
-          <Pagination
-            layout="table"
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={onPageChange}
-            showIcons
-          />
+        <div className="hidden md:block">
+          <div className=" my-4 w-full flex justify-start">
+            <div className="flex">
+              <Button
+                size="sm"
+                color="light"
+                className="rounded-r-none rounded-l-full bg-none"
+                disabled={currentPage === 1}
+                onClick={() => {
+                  setCurrentPage((prev) => prev - 1);
+                  fetchAllQuotes(currentPage - 1);
+                }}
+              >
+                Previous
+              </Button>
+
+              <Button
+                size="sm"
+                color="light"
+                className="border-l-0 rounded-l-none rounded-r-full bg-none"
+                disabled={currentPage === totalPages}
+                onClick={() => {
+                  setCurrentPage((prev) => prev + 1);
+                  fetchAllQuotes(currentPage + 1);
+                }}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="block md:hidden fixed bottom-20 right-4 z-10">
+          <div className="flex">
+            <Button
+              size="sm"
+              color="light"
+              className=" rounded-r-none  rounded-l-full bg-none"
+            >
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              color="light"
+              className="border-l-0 rounded-l-none  rounded-r-full bg-none"
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
     </div>
