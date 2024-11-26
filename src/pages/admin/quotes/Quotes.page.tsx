@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Table,
   TableBody,
@@ -14,9 +15,10 @@ import { useEffect, useState } from "react";
 import { deleteById, getAll } from "../../../core/firebase/firebase.service";
 import { Quote, Status } from "../../../interface/quotes";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { MdEdit, MdDelete, MdEmail } from "react-icons/md";
+import { MdDelete, MdEmail } from "react-icons/md";
+import { FaRegEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useLoader } from "../../../core/context/LoaderContext";
 import { Filters } from "../../../interface/core";
@@ -78,7 +80,7 @@ const Quotes = () => {
       });
 
       setLastVisibleDocument(data[data.length - 1]);
-
+      console.log(data);
       setDataSource(data);
       setTotalPages(Math.ceil(count / 10));
     } catch (error) {
@@ -124,7 +126,7 @@ const Quotes = () => {
   );
 
   return (
-    <div className="m-6">
+    <div className="m-4">
       <div className="text-2xl font-bold mb-4">Quotes</div>
       <div className="bg-white rounded-lg shadow-md p-4">
         {/* Filter Section */}
@@ -165,7 +167,9 @@ const Quotes = () => {
                     className="bg-white dark:bg-gray-800"
                   >
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell className="font-medium">{quote.name}</TableCell>
+                    <TableCell className="font-medium hover:underline">
+                      <Link to={`/quotes/${quote.id}`}>{quote.name}</Link>
+                    </TableCell>
                     <TableCell>{quote.email || "--"}</TableCell>
                     <TableCell>{quote.phone || "--"}</TableCell>
                     <TableCell>{quote.locationFrom || "--"}</TableCell>
@@ -175,14 +179,14 @@ const Quotes = () => {
                     </TableCell>
                     <TableCell>{renderStatusBadge(quote.status)}</TableCell>
                     <TableCell>
-                      <div className="flex gap-2">
-                        <Tooltip content="Edit">
+                      <div className="flex flex-wrap gap-2">
+                        <Tooltip content="View">
                           <Button
                             size="xs"
                             color="light"
                             onClick={() => navigate(`/quotes/${quote.id}`)}
                           >
-                            <MdEdit className="w-5 h-5" />
+                            <FaRegEye className="w-5 h-5" />
                           </Button>
                         </Tooltip>
                         <Tooltip content="Send Quotes">
@@ -226,7 +230,12 @@ const Quotes = () => {
                 key={quote.id}
                 className="bg-white shadow-lg rounded-md p-4 mb-4 border"
               >
-                <h2 className="text-lg font-semibold mb-2">{quote.name}</h2>
+                <h2
+                  className="text-lg font-semibold mb-2 hover:underline cursor-pointer"
+                  onClick={() => navigate(`/quotes/${quote.id}`)}
+                >
+                  {quote.name}
+                </h2>
                 <p className="text-sm text-gray-600">
                   <strong>Email:</strong> {quote.email || "--"}
                 </p>
@@ -246,13 +255,34 @@ const Quotes = () => {
                 <p className="text-sm">
                   <strong>Status:</strong> {renderStatusBadge(quote.status)}
                 </p>
-                <div className="mt-2">
-                  <Button
-                    size="sm"
-                    onClick={() => navigate(`/quotes/${quote.id}`)}
-                  >
-                    Edit
-                  </Button>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {/* <Tooltip content="View">
+                          <Button
+                            size="xs"
+                            color="light"
+                            onClick={() => navigate(`/quotes/${quote.id}`)}
+                          >
+                            <MdEdit className="w-5 h-5" />
+                          </Button>
+                        </Tooltip> */}
+                  <Tooltip content="Send Quotes">
+                    <Button
+                      size="xs"
+                      color="green"
+                      onClick={() => navigate(`/quotes/${quote.id}`)}
+                    >
+                      <MdEmail className="w-5 h-5" />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip content="Delete">
+                    <Button
+                      size="xs"
+                      color="red"
+                      onClick={() => deleteDoc(quote.id)}
+                    >
+                      <MdDelete className="w-5 h-5" />
+                    </Button>
+                  </Tooltip>
                 </div>
               </div>
             ))

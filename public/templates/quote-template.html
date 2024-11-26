@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quote</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+    .container {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+    }
+    .header {
+      background-color: #004C98;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+    .header h2 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    .header p {
+      margin: 4px 0;
+      font-size: 0.9rem;
+    }
+    .details {
+      margin-top: 15px;
+    }
+    .details h3 {
+      color: #0692FD;
+      font-size: 1rem;
+    }
+    .info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    .info strong {
+      color: #555;
+    }
+    .divider {
+      margin: 10px 0;
+      height: 1px;
+      background-color: #ddd;
+    }
+    .price-section {
+      text-align: center;
+      margin: 15px 0;
+    }
+    .price-section .price {
+      font-weight: bold;
+      color: #FFCF54;
+      font-size: 1.4rem;
+    }
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background-color: #f1f1f1;
+      padding: 10px;
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .footer a {
+      color: #004C98;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h2>SHIFTER</h2>
+      <p>GST No: 1234-5678-9012</p>
+      <p>Date: {{date}}</p>
+    </div>
+    
+    <!-- Details -->
+    <div class="details">
+      <h3>Client Details</h3>
+      <div class="info">
+        <span><strong>Name:</strong> {{name}}</span>
+        <span><strong>Email:</strong> {{email}}</span>
+      </div>
+      <div class="info">
+        <span><strong>Phone:</strong> {{phone}}</span>
+        <span><strong>Quote Date:</strong> {{quoteDate}}</span>
+      </div>
+      <div class="info">
+        <span><strong>Location From:</strong> {{locationFrom}}</span>
+        <span><strong>Location To:</strong> {{locationTo}}</span>
+      </div>
+      <div class="divider"></div>
+      
+      <!-- Price -->
+      <div class="price-section">
+        <p><strong>Total Quote:</strong></p>
+        <p class="price">Rs {{price}}/-</p>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p>Thank you for choosing us!</p>
+      <p>For inquiries, visit <a href="http://localhost:5173/home" target="_blank">shifter.com</a>.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -9,6 +9,8 @@ export interface Quote {
   created_at: string;
   updated_at: string;
   status: Status;
+  price?: string
+  message?: string
 }
 
 export enum Status {
