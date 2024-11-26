@@ -1,135 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quote</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f9;
-      color: #333;
-    }
-    .container {
-      width: 210mm;
-      height: 297mm;
-      margin: 0 auto;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-      padding: 20px;
-      position: relative;
-    }
-    .header {
-      background-color: #004C98;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-    }
-    .header h2 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-    .header p {
-      margin: 4px 0;
-      font-size: 0.9rem;
-    }
-    .address {
-      font-size: 0.85rem;
-      margin-top: 5px;
-    }
-    .details {
-      margin-top: 15px;
-    }
-    .details h3 {
-      color: #0692FD;
-      font-size: 1rem;
-    }
-    .info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-    }
-    .info strong {
-      color: #555;
-    }
-    .divider {
-      margin: 10px 0;
-      height: 1px;
-      background-color: #ddd;
-    }
-    .price-section {
-      text-align: center;
-      margin: 15px 0;
-    }
-    .price-section .price {
-      font-weight: bold;
-      color: #FFCF54;
-      font-size: 1.4rem;
-    }
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      background-color: #f1f1f1;
-      padding: 10px;
-      font-size: 0.85rem;
-      color: #555;
-    }
-    .footer a {
-      color: #004C98;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <h2>SHIFTER</h2>
-      <p>GST No: 1234-5678-9012</p>
-      <p>Date: {{date}}</p>
-      <div class="address">
-        <p>Shifter, 7th Floor, Phase II Carnival Infopark, Infopark SEZ Kakkanad, Kochi, Kerala 682042</p>
-        <p>Phone: 04864 225025</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quote</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+        color: #333;
+      }
+      .container {
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        padding: 20px;
+        position: relative;
+      }
+      .header {
+        background-color: #004c98;
+        color: #fff !important;
+        text-align: center;
+        padding: 20px 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .header h2 {
+        margin: 0;
+        font-size: 1.6rem;
+      }
+      .header p {
+        margin: 5px 0;
+        font-size: 0.95rem;
+        color: #fff !important;
+      }
+      .address {
+        font-size: 0.85rem;
+        margin-top: 8px;
+      }
+      .details {
+        margin-top: 15px;
+      }
+      .client_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+      }
+      .client_header h3 {
+        margin: 0;
+        color: #0692fd;
+        font-size: 1.2rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+        margin-top: 15px;
+      }
+      table th,
+      table td {
+        text-align: left;
+        padding: 12px;
+        border: 1px solid #ddd;
+      }
+      table th {
+        background-color: #f4f6f9;
+        color: #555;
+      }
+      table tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .price-section {
+        text-align: center;
+        margin: 25px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #fdfdfd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .price-section p {
+        margin: 5px 0;
+      }
+      .price-section .price {
+        font-weight: bold;
+        color: #ffcf54;
+        font-size: 1.6rem;
+      }
+      .footer {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+      }
+      .footer a {
+        color: #004c98;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h2>SHIFTER</h2>
+        <p>GST No: 1234-5678-9012</p>
+        <div class="address">
+          <p>
+            Shifter, 7th Floor, Phase II Carnival Infopark, Infopark SEZ,
+            Kakkanad, Kochi, Kerala 682042
+          </p>
+          <p>Phone: 04864 225025</p>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="details">
+        <div class="client_header">
+          <h3>Client Details</h3>
+          <p>Date: {{date}}</p>
+        </div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{phone}}</td>
+          </tr>
+          <tr>
+            <th>Quote Date</th>
+            <td>{{quoteDate}}</td>
+          </tr>
+          <tr>
+            <th>Location From</th>
+            <td>{{locationFrom}}</td>
+          </tr>
+          <tr>
+            <th>Location To</th>
+            <td>{{locationTo}}</td>
+          </tr>
+        </table>
+
+        <!-- Price -->
+        <div class="price-section">
+          <p><strong>Total Price:</strong></p>
+          <p class="price">Rs {{price}}/-</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Thank you for choosing us!</p>
+        <p>
+          For inquiries, visit
+          <a href="http://localhost:5173/home" target="_blank">shifter.com</a>.
+        </p>
       </div>
     </div>
-    
-    <!-- Details -->
-    <div class="details">
-      <h3>Client Details</h3>
-      <div class="info">
-        <span><strong>Name:</strong> {{name}}</span>
-        <span><strong>Email:</strong> {{email}}</span>
-      </div>
-      <div class="info">
-        <span><strong>Phone:</strong> {{phone}}</span>
-        <span><strong>Quote Date:</strong> {{quoteDate}}</span>
-      </div>
-      <div class="info">
-        <span><strong>Location From:</strong> {{locationFrom}}</span>
-        <span><strong>Location To:</strong> {{locationTo}}</span>
-      </div>
-      <div class="divider"></div>
-      
-      <!-- Price -->
-      <div class="price-section">
-        <p><strong>Total Quote:</strong></p>
-        <p class="price">Rs {{price}}/-</p>
-      </div>
-    </div>
-    
-    <!-- Footer -->
-    <div class="footer">
-      <p>Thank you for choosing us!</p>
-      <p>For inquiries, visit <a href="http://localhost:5173/home" target="_blank">shifter.com</a>.</p>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

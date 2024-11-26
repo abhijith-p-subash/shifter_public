@@ -156,7 +156,7 @@ const QuotesDetailsPage: React.FC = () => {
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Quote_${quoteData.id}.pdf`);
+      pdf.save(`Quote_${quoteData.name}_${quoteData.id}.pdf`);
 
       // Clean up
       document.body.removeChild(tempContainer);
