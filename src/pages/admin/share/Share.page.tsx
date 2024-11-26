@@ -103,7 +103,7 @@ const SharePage: React.FC = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write a catchy message to share"
-              rows={3}
+              rows={10}
             />
           </div>
         </div>

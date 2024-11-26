@@ -181,16 +181,32 @@ const QuotesDetailsPage: React.FC = () => {
       );
       if (confirmed) {
         showLoader();
-        await deleteById("quotes", id);
-
+        await updateById<Quote>("quotes", id, {
+          status: Status.CANCELLED,
+        });
+        await fetchQuote();
         toast.success("Quote cancelled successfully");
-        navigate("/quotes");
       }
     } catch (error) {
       console.error(error);
       toast.error("Failed to cancel quote");
     } finally {
       hideLoader();
+    }
+  };
+
+  const updateComplete = async () => {
+    try {
+      if (quoteData) {
+        await updateById<Quote>("quotes", quoteData.id, {
+          status: Status.COMPLETED,
+        });
+        await fetchQuote();
+        toast.success("Quote completed successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to complete quote");
+      console.error(error);
     }
   };
 
@@ -240,17 +256,18 @@ const QuotesDetailsPage: React.FC = () => {
           {quoteData.price && (
             <Button onClick={generatePDF}>Download PDF</Button>
           )}
-          <Button color="primary" disabled={!quoteData.price}>
+          {/* <Button color="primary" disabled={!quoteData.price}>
             Send Quote
-          </Button>
+          </Button> */}
 
           <Button
             color="success"
-            disabled={quoteData.status !== Status.QUOTE_SENT}
+            disabled={!quoteData.price || quoteData.status === Status.CANCELLED || quoteData.status === Status.COMPLETED}
+            onClick={updateComplete}
           >
             Complete
           </Button>
-          <Button color="failure" onClick={cancelQuote}>
+          <Button color="failure" onClick={cancelQuote} disabled={quoteData.status === Status.CANCELLED || quoteData.status === Status.COMPLETED}>
             Cancel Quote
           </Button>
         </div>

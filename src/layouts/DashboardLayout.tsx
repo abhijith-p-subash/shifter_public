@@ -6,7 +6,7 @@ import {
   HiClipboard,
   HiCollection,
   HiInformationCircle,
-  HiShoppingBag,
+  // HiShoppingBag,
 } from "react-icons/hi";
 import { IoReceiptSharp, IoLogOutOutline } from "react-icons/io5";
 import { RiMenu2Fill, RiMenu3Fill } from "react-icons/ri";
@@ -27,11 +27,11 @@ const navLinks = [
     url: "quotes",
     icon: IoReceiptSharp,
   },
-  {
-    title: "Shift Request",
-    url: "shift-request",
-    icon: HiShoppingBag,
-  },
+  // {
+  //   title: "Shift Request",
+  //   url: "shift-request",
+  //   icon: HiShoppingBag,
+  // },
   {
     title: "Share",
     url: "share",

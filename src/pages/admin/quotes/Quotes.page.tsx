@@ -141,7 +141,7 @@ const Quotes = () => {
           >
             <option value="">Filter</option>
             <option value="in-progress">In-Progress</option>
-            <option value="quote-sent">Quote Sent</option>
+            {/* <option value="quote-sent">Quote Sent</option> */}
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
