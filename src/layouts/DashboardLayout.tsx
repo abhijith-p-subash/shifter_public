@@ -13,7 +13,7 @@ import { RiMenu2Fill, RiMenu3Fill } from "react-icons/ri";
 
 import { Drawer } from "flowbite-react";
 import { HiBars2 } from "react-icons/hi2";
-
+import { FaShareAlt } from "react-icons/fa";
 
 
 const navLinks = [
@@ -31,6 +31,11 @@ const navLinks = [
     title: "Shift Request",
     url: "shift-request",
     icon: HiShoppingBag,
+  },
+  {
+    title: "Share",
+    url: "share",
+    icon: FaShareAlt,
   },
 ];
 

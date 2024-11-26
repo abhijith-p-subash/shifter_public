@@ -17,6 +17,7 @@ import Quotes from "./pages/admin/quotes/Quotes.page";
 import ShiftDetails from "./pages/admin/shift-details/ShiftDetails.page";
 import LoaderDark from "./components/common/LoaderDark";
 import QuotesDetailsPage from "./pages/admin/quotes/quote-details/Quotes-details.page";
+import SharePage from "./pages/admin/share/Share.page";
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,6 +71,7 @@ const App: React.FC = () => {
           <Route path="/quotes" element={<Quotes />} />
           <Route path="/quotes/:id" element={<QuotesDetailsPage />} />
           <Route path="/shift-request" element={<ShiftDetails />} />
+          <Route path="/share" element={<SharePage />} />
         </Route>
 
         {/* 404 Route */}
