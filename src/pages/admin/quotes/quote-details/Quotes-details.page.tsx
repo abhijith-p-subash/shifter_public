@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  create,
-  deleteById,
   getById,
   updateById,
 } from "../../../../core/firebase/firebase.service";
@@ -62,7 +60,6 @@ const renderStatusBadge = (status: Status) => (
 const QuotesDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const fetchCalled = useRef(false);
-  const navigate = useNavigate();
   const [quoteData, setQuoteData] = useState<Quote | null>(null);
   const { showLoader, hideLoader } = useLoader();
   const [editPrice, setEditPrice] = useState(false);
@@ -227,7 +224,7 @@ const QuotesDetailsPage: React.FC = () => {
         updated_at: moment().toISOString()
       };
 
-      await updateById<Quote>("quotes", id, sanitizedData);
+      await updateById("quotes", id, sanitizedData);
       await fetchQuote();
       setEditPrice(false);
       toast.success("Price updated successfully");
@@ -275,102 +272,105 @@ const QuotesDetailsPage: React.FC = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-28 md:mb-0">
-          <div className="p-4 bg-white rounded-lg shadow w-full relative">
-            {quoteData.price && quoteData.status !== Status.COMPLETED && quoteData.status !== Status.CANCELLED && (
-              <Button
-                color="light"
-                size="xs"
-                className="absolute right-2 top-2"
-                onClick={openEditTab}
-              >
-                <MdModeEdit className="w-4 h-4" />
-              </Button>
-            )}
-            <div className="space-y-4">
-              {[
-                { label: "Quote ID", value: quoteData.id },
-                { label: "Name", value: quoteData.name },
-                { label: "Email", value: quoteData.email },
-                { label: "Phone", value: quoteData.phone },
-                { label: "Status", value: renderStatusBadge(quoteData.status) },
-                { label: "Location From", value: quoteData.locationFrom },
-                { label: "Location To", value: quoteData.locationTo },
-                {
-                  label: "Date",
-                  value: moment(quoteData.date).format("DD, MMMM YYYY"),
-                },
-
-                quoteData.price && {
-                  label: "Price",
-                  value: (
-                    <span className="font-bold text-red-600">
-                      Rs {quoteData.price}/-
-                    </span>
-                  ),
-                },
-
-                quoteData.price && {
-                  label: "Message",
-                  value: quoteData.message || "--",
-                },
-              ]
-                .filter(Boolean)
-                .map(({ label, value }, index) => (
-                  <div className="flex items-center" key={index}>
-                    <span className="mr-2">{label}:</span>
-                    <p>{value || "--"}</p>
-                  </div>
-                ))}
+  <div className="p-4 bg-white rounded-lg shadow w-full relative">
+    {quoteData.price && quoteData.status !== Status.COMPLETED && quoteData.status !== Status.CANCELLED && (
+      <Button
+        color="light"
+        size="xs"
+        className="absolute right-2 top-2"
+        onClick={openEditTab}
+      >
+        <MdModeEdit className="w-4 h-4" />
+      </Button>
+    )}
+    <div className="space-y-4">
+      {[
+        { label: "Quote ID", value: quoteData.id },
+        { label: "Name", value: quoteData.name },
+        { label: "Email", value: quoteData.email },
+        { label: "Phone", value: quoteData.phone },
+        { label: "Status", value: renderStatusBadge(quoteData.status) },
+        { label: "Location From", value: quoteData.locationFrom },
+        { label: "Location To", value: quoteData.locationTo },
+        {
+          label: "Date",
+          value: moment(quoteData.date).format("DD, MMMM YYYY"),
+        },
+        quoteData.price && {
+          label: "Price",
+          value: (
+            <span className="font-bold text-red-600">
+              Rs {quoteData.price}/-
+            </span>
+          ),
+        },
+        quoteData.price && {
+          label: "Message",
+          value: quoteData.message || "--",
+        },
+      ]
+        .filter(Boolean) // Filter out falsy values like `false` or `undefined`
+        .map((item, index) => {
+          // Type assertion ensures TypeScript knows the structure of `item`
+          const { label, value } = item as { label: string; value: string | JSX.Element };
+          return (
+            <div className="flex items-center" key={index}>
+              <span className="mr-2">{label}:</span>
+              <p>{value || "--"}</p>
             </div>
-          </div>
+          );
+        })}
+    </div>
+  </div>
 
-          {(!quoteData.price || editPrice) && (
-            <div className="p-4 rounded-lg shadow w-full bg-white">
-              <h2 className="text-xl mb-2">Price Details</h2>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <div>
-                  <Label htmlFor="price" value="Price" />
-                  <TextInput
-                    id="price"
-                    type="text"
-                    placeholder="Price"
-                    {...register("price")}
-                    color={errors.price ? "failure" : "primary"}
-                    helperText={errors.price?.message}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="message" value="Message" />
-                  <Textarea
-                    id="message"
-                    placeholder="Leave a comment..."
-                    rows={4}
-                    {...register("message")}
-                    color={errors.message ? "failure" : "primary"}
-                    helperText={errors.message?.message}
-                  />
-                </div>
-                <div className="flex gap-2 justify-end">
-                  <Button type="submit" color="primary">
-                    Submit
-                  </Button>
-                  {quoteData.price && (
-                    <Button
-                      outline
-                      color="light"
-                      onClick={() => setEditPrice(false)}
-                    >
-                      Cancel
-                    </Button>
-                  )}
-                </div>
-              </form>
-            </div>
+  {(!quoteData.price || editPrice) && (
+    <div className="p-4 rounded-lg shadow w-full bg-white">
+      <h2 className="text-xl mb-2">Price Details</h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
+        <div>
+          <Label htmlFor="price" value="Price" />
+          <TextInput
+            id="price"
+            type="text"
+            placeholder="Price"
+            {...register("price")}
+            color={errors.price ? "failure" : "primary"}
+            helperText={errors.price?.message}
+          />
+        </div>
+        <div>
+          <Label htmlFor="message" value="Message" />
+          <Textarea
+            id="message"
+            placeholder="Leave a comment..."
+            rows={4}
+            {...register("message")}
+            color={errors.message ? "failure" : "primary"}
+            helperText={errors.message?.message}
+          />
+        </div>
+        <div className="flex gap-2 justify-end">
+          <Button type="submit" color="primary">
+            Submit
+          </Button>
+          {quoteData.price && (
+            <Button
+              outline
+              color="light"
+              onClick={() => setEditPrice(false)}
+            >
+              Cancel
+            </Button>
           )}
         </div>
+      </form>
+    </div>
+  )}
+</div>
+
       </div>
     </div>
   );

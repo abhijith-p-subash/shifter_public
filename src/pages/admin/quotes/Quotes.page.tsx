@@ -17,7 +17,7 @@ import { Quote, Status } from "../../../interface/quotes";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 
-import { MdDelete, MdEmail } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useLoader } from "../../../core/context/LoaderContext";
@@ -189,7 +189,7 @@ const Quotes = () => {
                             <FaRegEye className="w-5 h-5" />
                           </Button>
                         </Tooltip>
-                        <Tooltip content="Send Quotes">
+                        {/* <Tooltip content="Send Quotes">
                           <Button
                             size="xs"
                             color="green"
@@ -197,7 +197,7 @@ const Quotes = () => {
                           >
                             <MdEmail className="w-5 h-5" />
                           </Button>
-                        </Tooltip>
+                        </Tooltip> */}
                         <Tooltip content="Delete">
                           <Button
                             size="xs"
@@ -265,7 +265,7 @@ const Quotes = () => {
                             <MdEdit className="w-5 h-5" />
                           </Button>
                         </Tooltip> */}
-                  <Tooltip content="Send Quotes">
+                  {/* <Tooltip content="Send Quotes">
                     <Button
                       size="xs"
                       color="green"
@@ -273,7 +273,7 @@ const Quotes = () => {
                     >
                       <MdEmail className="w-5 h-5" />
                     </Button>
-                  </Tooltip>
+                  </Tooltip> */}
                   <Tooltip content="Delete">
                     <Button
                       size="xs"

@@ -3,10 +3,6 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Button, Sidebar } from "flowbite-react";
 import {
   HiChartPie,
-  HiClipboard,
-  HiCollection,
-  HiInformationCircle,
-  // HiShoppingBag,
 } from "react-icons/hi";
 import { IoReceiptSharp, IoLogOutOutline } from "react-icons/io5";
 import { RiMenu2Fill, RiMenu3Fill } from "react-icons/ri";
