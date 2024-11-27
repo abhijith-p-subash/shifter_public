@@ -183,6 +183,7 @@ const QuotesDetailsPage: React.FC = () => {
         showLoader();
         await updateById<Quote>("quotes", id, {
           status: Status.CANCELLED,
+          updated_at: moment().toISOString()
         });
         await fetchQuote();
         toast.success("Quote cancelled successfully");
@@ -200,6 +201,7 @@ const QuotesDetailsPage: React.FC = () => {
       if (quoteData) {
         await updateById<Quote>("quotes", quoteData.id, {
           status: Status.COMPLETED,
+          updated_at: moment().toISOString()
         });
         await fetchQuote();
         toast.success("Quote completed successfully");
@@ -222,6 +224,7 @@ const QuotesDetailsPage: React.FC = () => {
         price: DOMPurify.sanitize(data.price),
         message: DOMPurify.sanitize(data.message || ""),
         status: DOMPurify.sanitize(Status.IN_PROGRESS),
+        updated_at: moment().toISOString()
       };
 
       await updateById<Quote>("quotes", id, sanitizedData);
@@ -273,7 +276,7 @@ const QuotesDetailsPage: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-28 md:mb-0">
           <div className="p-4 bg-white rounded-lg shadow w-full relative">
-            {quoteData.price && (
+            {quoteData.price && quoteData.status !== Status.COMPLETED && quoteData.status !== Status.CANCELLED && (
               <Button
                 color="light"
                 size="xs"
