@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useLoader } from "../../../core/context/LoaderContext";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -38,17 +39,10 @@ const Dashboard = () => {
     completed: 0,
     cancelled: 0,
   });
-  const [monthlyRevenue, setMonthlyRevenue] = useState<number[]>(
-    new Array(12).fill(0)
-  );
+  const [monthlyRevenue, setMonthlyRevenue] = useState<number[]>(new Array(12).fill(0));
   const [totalRevenue, setTotalRevenue] = useState<number>(0); // New state for total revenue
   const [monthlyStatusData, setMonthlyStatusData] = useState(
-    Array.from({ length: 12 }, () => ({
-      pending: 0,
-      inProgress: 0,
-      completed: 0,
-      cancelled: 0,
-    }))
+    Array.from({ length: 12 }, () => ({ pending: 0, inProgress: 0, completed: 0, cancelled: 0 }))
   );
   const [selectedYear, setSelectedYear] = useState(moment().year()); // Initialize with the current year
 
@@ -73,13 +67,7 @@ const Dashboard = () => {
         limit: 1000,
       });
 
-      const statusCount = {
-        pending: 0,
-        inProgress: 0,
-        completed: 0,
-        cancelled: 0,
-      };
-
+      const statusCount = { pending: 0, inProgress: 0, completed: 0, cancelled: 0 };
       const monthlyRevenueData = new Array(12).fill(0);
       const monthlyStatus = Array.from({ length: 12 }, () => ({
         pending: 0,
@@ -98,22 +86,10 @@ const Dashboard = () => {
         }
 
         // Update status count
-        if (status === "pending") {
-          statusCount.pending++;
-          monthlyStatus[updatedMonth].pending++;
-        }
-        if (status === "in-progress") {
-          statusCount.inProgress++;
-          monthlyStatus[updatedMonth].inProgress++;
-        }
-        if (status === "completed") {
-          statusCount.completed++;
-          monthlyStatus[updatedMonth].completed++;
-        }
-        if (status === "cancelled") {
-          statusCount.cancelled++;
-          monthlyStatus[updatedMonth].cancelled++;
-        }
+        if (status === "pending") statusCount.pending++, monthlyStatus[updatedMonth].pending++;
+        if (status === "in-progress") statusCount.inProgress++, monthlyStatus[updatedMonth].inProgress++;
+        if (status === "completed") statusCount.completed++, monthlyStatus[updatedMonth].completed++;
+        if (status === "cancelled") statusCount.cancelled++, monthlyStatus[updatedMonth].cancelled++;
       });
 
       setQuoteData(statusCount);
@@ -187,94 +163,75 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="m-4 mb-20 lg:mb-0">
-      <div className="text-2xl font-bold mb-4">Dashboard</div>
+    <div className="container mx-auto p-4 mb-20 md:mb-0">
+      
 
       {/* Year Selector */}
-      <div className="mb-6">
-        <label htmlFor="year-select" className="font-semibold mr-2">
-          Select Year:
-        </label>
-        <select
-          id="year-select"
-          value={selectedYear}
-          onChange={handleYearChange}
-          className="p-2 border rounded-lg"
-        >
-          {Array.from(
-            { length: moment().year() - 2021 },
-            (_, i) => 2022 + i
-          ).map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </div>
-
-       {/* Status Summary */}
-       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6 my-4">
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-          <div className="text-lg font-bold mb-2 uppercase text-softYellow-500">
-            Pending
-          </div>
-          <div className="text-4xl font-extrabold text-softYellow-600">
-            {quoteData.pending || 0}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-          <div className="text-lg font-bold mb-2 uppercase text-brightBlue-500">
-            In Progress
-          </div>
-          <div className="text-4xl font-extrabold text-brightBlue-600">
-            {quoteData.inProgress || 0}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-          <div className="text-lg font-bold mb-2 uppercase text-green-500">
-            Completed
-          </div>
-          <div className="text-4xl font-extrabold text-green-600">
-            {quoteData.completed || 0}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-          <div className="text-lg font-bold mb-2 uppercase text-red-500">
-            Cancelled
-          </div>
-          <div className="text-4xl font-extrabold text-red-600">
-            {quoteData.cancelled || 0}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-          <div className="text-lg font-bold mb-2 uppercase text-purple-500">
-            Total Revenue
-          </div>
-          <div className="text-4xl font-extrabold text-purple-600">
-            ₹{totalRevenue.toLocaleString()}
-          </div>
+      <div className="mb-8 flex  justify-between items-center flex-wrap">
+      <div className="text-3xl font-semibold ">Dashboard</div> 
+        <div className="flex items-center space-x-2">
+          <label htmlFor="year-select" className="font-semibold text-lg">
+            Select Year:
+          </label>
+          <select
+            id="year-select"
+            value={selectedYear}
+            onChange={handleYearChange}
+            className="p-2 border rounded-md shadow-sm text-gray-700"
+          >
+            {Array.from({ length: moment().year() - 2021 }, (_, i) => 2022 + i).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {/* Revenue Chart */}
-      <div className="bg-white rounded-lg shadow-md p-4 pb-16 mb-6 h-96">
-        <h3 className="text-lg font-semibold mb-4">Monthly Revenue</h3>
-        <Line
-          options={{ responsive: true, maintainAspectRatio: false }}
-          data={revenueChartData}
-        />
+      {/* Status Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Pending */}
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <div className="text-xs uppercase text-yellow-500 mb-2">Pending</div>
+          <div className="text-5xl font-bold text-yellow-600">{quoteData.pending || 0}</div>
+        </div>
+
+        {/* In Progress */}
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <div className="text-xs uppercase text-blue-500 mb-2">In Progress</div>
+          <div className="text-5xl font-bold text-blue-600">{quoteData.inProgress || 0}</div>
+        </div>
+
+        {/* Completed */}
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <div className="text-xs uppercase text-green-500 mb-2">Completed</div>
+          <div className="text-5xl font-bold text-green-600">{quoteData.completed || 0}</div>
+        </div>
+
+        {/* Cancelled */}
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <div className="text-xs uppercase text-red-500 mb-2">Cancelled</div>
+          <div className="text-5xl font-bold text-red-600">{quoteData.cancelled || 0}</div>
+        </div>
       </div>
 
-      {/* Status Data Chart */}
-      <div className="bg-white rounded-lg shadow-md p-4 pb-16 h-96">
-        <h3 className="text-lg font-semibold mb-4">Monthly Status Data</h3>
-        <Bar
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-          }}
-          data={statusChartData}
-        />
+      {/* Revenue Card */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8 text-center">
+        <div className="text-xs uppercase text-purple-500 mb-2">Total Revenue</div>
+        <div className="text-3xl font-bold text-purple-600">{`₹${totalRevenue.toLocaleString()}`}</div>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Revenue Chart */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <Line data={revenueChartData} />
+        </div>
+
+        {/* Status Chart */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <Bar data={statusChartData} />
+        </div>
       </div>
     </div>
   );
