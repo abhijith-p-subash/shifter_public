@@ -41,6 +41,7 @@ const Dashboard = () => {
   const [monthlyRevenue, setMonthlyRevenue] = useState<number[]>(
     new Array(12).fill(0)
   );
+  const [totalRevenue, setTotalRevenue] = useState<number>(0); // New state for total revenue
   const [monthlyStatusData, setMonthlyStatusData] = useState(
     Array.from({ length: 12 }, () => ({
       pending: 0,
@@ -117,6 +118,7 @@ const Dashboard = () => {
 
       setQuoteData(statusCount);
       setMonthlyRevenue(monthlyRevenueData);
+      setTotalRevenue(monthlyRevenueData.reduce((sum, revenue) => sum + revenue, 0)); // Calculate total revenue
       setMonthlyStatusData(monthlyStatus);
     } catch (error) {
       toast.error("Failed to fetch quotes");
@@ -210,8 +212,8 @@ const Dashboard = () => {
         </select>
       </div>
 
-      {/* Status Summary */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6 my-4">
+       {/* Status Summary */}
+       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6 my-4">
         <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
           <div className="text-lg font-bold mb-2 uppercase text-softYellow-500">
             Pending
@@ -242,6 +244,14 @@ const Dashboard = () => {
           </div>
           <div className="text-4xl font-extrabold text-red-600">
             {quoteData.cancelled || 0}
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+          <div className="text-lg font-bold mb-2 uppercase text-purple-500">
+            Total Revenue
+          </div>
+          <div className="text-4xl font-extrabold text-purple-600">
+            ₹{totalRevenue.toLocaleString()}
           </div>
         </div>
       </div>
