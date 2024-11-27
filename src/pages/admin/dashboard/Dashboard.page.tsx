@@ -5,12 +5,14 @@ import { getAll } from "../../../core/firebase/firebase.service";
 import { Quote } from "../../../interface/quotes";
 import { useEffect, useState } from "react";
 
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
@@ -21,6 +23,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
@@ -49,7 +53,6 @@ const Dashboard = () => {
   const fetchAllQuotes = async () => {
     try {
       showLoader();
-
 
       const { data } = await getAll<Quote>("quotes", {
         filters: [
@@ -132,9 +135,12 @@ const Dashboard = () => {
       {
         label: "Revenue Generated",
         data: monthlyRevenue,
-        backgroundColor: "rgba(0, 123, 255, 0.6)", // Blue
-        borderColor: "rgba(0, 123, 255, 1)",
-        borderWidth: 1,
+        backgroundColor: "rgba(0, 123, 255, 0.2)", // Blue (light fill)
+        borderColor: "rgba(0, 123, 255, 1)", // Blue (line color)
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(0, 123, 255, 1)",
+        pointBorderColor: "#fff",
+        tension: 0.4, // Smooth curve
       },
     ],
   };
@@ -205,7 +211,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
           <div className="text-lg font-bold mb-2 uppercase text-red-500">
-            cancelled
+            Cancelled
           </div>
           <div className="text-4xl font-extrabold text-red-600">
             {quoteData.cancelled || 0}
@@ -214,16 +220,16 @@ const Dashboard = () => {
       </div>
 
       {/* Revenue Chart */}
-      <div className="bg-white rounded-lg shadow-md p-4 pb-16  mb-6 h-96">
+      <div className="bg-white rounded-lg shadow-md p-4 pb-16 mb-6 h-96">
         <h3 className="text-xl font-semibold mb-4">Monthly Revenue</h3>
-        <Bar
+        <Line
           data={revenueChartData}
           options={{ responsive: true, maintainAspectRatio: false }}
         />
       </div>
 
       {/* Status Chart */}
-      <div className="bg-white rounded-lg shadow-md p-4 pb-16  h-96">
+      <div className="bg-white rounded-lg shadow-md p-4 pb-16 h-96">
         <h3 className="text-xl font-semibold mb-4">Monthly Status Breakdown</h3>
         <Bar
           data={statusChartData}
