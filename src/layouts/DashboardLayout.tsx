@@ -95,7 +95,7 @@ const DashboardLayout: React.FC = () => {
                       </Link>
                     ))}
                   </Sidebar.ItemGroup>
-                  <Sidebar.ItemGroup>
+                  {/* <Sidebar.ItemGroup>
                     <Sidebar.Item
                       href="https://github.com/themesberg/flowbite-react/"
                       icon={HiClipboard}
@@ -114,7 +114,7 @@ const DashboardLayout: React.FC = () => {
                     >
                       Help
                     </Sidebar.Item>
-                  </Sidebar.ItemGroup>
+                  </Sidebar.ItemGroup> */}
                 </Sidebar.Items>
               </div>
             </Sidebar>

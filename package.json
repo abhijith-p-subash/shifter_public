@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@types/nodemailer": "^6.4.17",
+    "chart.js": "^4.4.6",
     "dompurify": "^3.2.0",
     "firebase": "^11.0.1",
     "flowbite-react": "^0.10.2",
@@ -25,6 +26,7 @@
     "nodemailer": "^6.9.16",
     "qrcode.react": "^4.1.0",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-helmet": "^6.1.0",
