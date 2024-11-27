@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   collection,
   getDocs,
@@ -173,7 +173,7 @@ export const deleteBulk = async (
 ): Promise<{ success: boolean; id: string; error: Error | null }[]> => {
   const deletePromises = ids.map(async (id) => {
     try {
-      const result = await deleteById(collectionName, id);
+      await deleteById(collectionName, id);
       return { success: true, id, error: null };
     } catch (error) {
       return { success: false, id, error: error as Error };
