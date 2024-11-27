@@ -49,8 +49,9 @@ const Dashboard = () => {
       cancelled: 0,
     }))
   );
+  const [selectedYear, setSelectedYear] = useState(moment().year()); // Initialize with the current year
 
-  const fetchAllQuotes = async () => {
+  const fetchAllQuotes = async (year: number) => {
     try {
       showLoader();
 
@@ -59,12 +60,12 @@ const Dashboard = () => {
           {
             field: "created_at",
             operator: ">=",
-            value: moment().startOf("year").format(),
+            value: moment().year(year).startOf("year").format(),
           },
           {
             field: "created_at",
             operator: "<=",
-            value: moment().endOf("year").format(),
+            value: moment().year(year).endOf("year").format(),
           },
         ],
         sort: { field: "created_at", direction: "desc" },
@@ -126,11 +127,15 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchAllQuotes();
-  }, []);
+    fetchAllQuotes(selectedYear); // Fetch data for the initial year
+  }, [selectedYear]);
+
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(parseInt(event.target.value, 10));
+  };
 
   const revenueChartData = {
-    labels: moment.months(), // ["January", "February", ..., "December"]
+    labels: moment.months(),
     datasets: [
       {
         label: "Revenue Generated",
@@ -183,6 +188,28 @@ const Dashboard = () => {
     <div className="m-4 mb-20 lg:mb-0">
       <div className="text-2xl font-bold mb-4">Dashboard</div>
 
+      {/* Year Selector */}
+      <div className="mb-6">
+        <label htmlFor="year-select" className="font-semibold mr-2">
+          Select Year:
+        </label>
+        <select
+          id="year-select"
+          value={selectedYear}
+          onChange={handleYearChange}
+          className="p-2 border rounded-lg"
+        >
+          {Array.from(
+            { length: moment().year() - 2021 },
+            (_, i) => 2022 + i
+          ).map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Status Summary */}
       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6 my-4">
         <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
@@ -221,19 +248,22 @@ const Dashboard = () => {
 
       {/* Revenue Chart */}
       <div className="bg-white rounded-lg shadow-md p-4 pb-16 mb-6 h-96">
-        <h3 className="text-xl font-semibold mb-4">Monthly Revenue</h3>
+        <h3 className="text-lg font-semibold mb-4">Monthly Revenue</h3>
         <Line
-          data={revenueChartData}
           options={{ responsive: true, maintainAspectRatio: false }}
+          data={revenueChartData}
         />
       </div>
 
-      {/* Status Chart */}
+      {/* Status Data Chart */}
       <div className="bg-white rounded-lg shadow-md p-4 pb-16 h-96">
-        <h3 className="text-xl font-semibold mb-4">Monthly Status Breakdown</h3>
+        <h3 className="text-lg font-semibold mb-4">Monthly Status Data</h3>
         <Bar
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+          }}
           data={statusChartData}
-          options={{ responsive: true, maintainAspectRatio: false }}
         />
       </div>
     </div>
