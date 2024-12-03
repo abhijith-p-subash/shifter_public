@@ -8,6 +8,7 @@ import { TextInput, Button, Label } from "flowbite-react";
 import { toast } from "react-toastify";
 import ReCAPTCHA from "react-google-recaptcha";
 import DOMPurify from "dompurify";
+import informedDecision from '../../assets/informed_decision.svg'
 
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../core/firebase/firebase.config";
@@ -265,7 +266,7 @@ const GetPrice: React.FC = () => {
             <div className="relative mb-6">
               <img
                 className="w-full h-auto max-w-md opacity-80"
-                src="src/assets/informed_decision.svg"
+                src={informedDecision}
                 alt="Informed Decision"
               />
             </div>

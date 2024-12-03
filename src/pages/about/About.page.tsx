@@ -1,4 +1,5 @@
 import MetaTags from "../../components/MetaTags";
+import movingImage from '../../assets/moving_re.svg'
 
 const About = () => {
   const pageData = {
@@ -44,7 +45,7 @@ const About = () => {
           {/* Image Section */}
           <div className="flex justify-center md:justify-end">
             <img
-              src="src/assets/moving_re.svg"
+              src={movingImage}
               alt="Moving illustration"
               className="w-full max-w-md transform hover:scale-105 transition-transform duration-500"
             />

@@ -10,6 +10,7 @@ const FooterBar = () => {
           <div>
             <span
               onClick={() => navigate("/home")}
+              role="button"
               className="cursor-pointer self-center whitespace-nowrap text-3xl font-semibold dark:text-white bg-gradient-to-r from-brightBlue-500 via-softYellow-500 to-brightBlue-500 inline-block text-transparent bg-clip-text"
             >
               Shifter

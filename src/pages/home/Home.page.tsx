@@ -10,6 +10,8 @@ import { FaTruckLoading, FaTruckMoving, FaWarehouse } from "react-icons/fa";
 import MetaTags from "../../components/MetaTags";
 import { useLoader } from "../../core/context/LoaderContext";
 import { useEffect } from "react";
+import coupleSortingCartonBoxes from "../../assets/img/couple-sorting-carton-boxes.webp";
+import deliveryTruck from "../../assets/delivery_truck.svg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const Home = () => {
     title: "House Shifting Services - Get an Instant Moving Quote",
     description:
       "Need help with moving? Get an instant quote for your house shifting with transparent pricing and reliable service.",
-    imageUrl: "/assets/img/couple-sorting-carton-boxes.webp", // Replace with the correct image URL (use absolute path)
+    imageUrl: '/assets/img/couple-sorting-carton-boxes.webp', // Replace with the correct image URL (use absolute path)
     url: window.location.href,
     keywords:
       "house shifting, moving services, affordable movers, transparent pricing, relocation services, home moving quote, professional movers",
@@ -29,8 +31,8 @@ const Home = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const backgroundImages = [
-    "src/assets/img/couple-sorting-carton-boxes.webp",
-    "src/assets/delivery_truck.svg",
+    coupleSortingCartonBoxes,
+    deliveryTruck,
   ];
 
   // Function to preload images
@@ -122,7 +124,7 @@ const Home = () => {
               className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage:
-                  "url('src/assets/img/couple-sorting-carton-boxes.webp')",
+                  `url(${coupleSortingCartonBoxes})`,
               }}
             >
               {/* Blue Transparent Overlay */}
@@ -337,7 +339,7 @@ const Home = () => {
               </div>
               <div className="grid grid-cols-1 md;grid-cols-2 lg:grid-cols-2  gap-4">
                 <div>
-                  <img src="src/assets/delivery_truck.svg" alt="" />
+                  <img src={deliveryTruck} alt="" />
                 </div>
                 <div>
                   <p className="text-gray-900">

@@ -7,6 +7,7 @@ import {
   NavbarToggle,
 } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import truckSVG from "../../assets/truck.svg";
 
 const moreLinks = [
   {
@@ -36,7 +37,7 @@ const Header = () => {
       <NavbarBrand onClick={() => navigate("/home")}>
        <div className="flex items-center justify-center bg-brightBlue-800 px-2 rounded-full">
          <img
-          src="src/assets/truck.svg"
+          src={truckSVG}
           className="mr-1 h-8 sm:h-9"
           alt="Shifter Logo"
         />
