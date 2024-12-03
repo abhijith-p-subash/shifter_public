@@ -204,6 +204,21 @@ const DashboardLayout: React.FC = () => {
                 ))}
               </div>
             </Drawer.Items>
+            <Drawer.Items className="p-4"  onClick={handleLogout}>
+              <div className="grid grid-cols-3 gap-4 p-4 lg:grid-cols-4">
+             
+                    <div className="cursor-pointer rounded-lg bg-red-50 p-4 hover:bg-red-100 dark:bg-gray-700 dark:hover:bg-gray-600">
+                      <div className="mx-auto mb-2 flex h-[48px] max-h-[48px] w-[48px] max-w-[48px] items-center justify-center rounded-full bg-red-500 p-2 dark:bg-gray-600">
+                        
+                        <IoLogOutOutline className="text-white dark:text-red-400 h-6 w-6" />
+                      </div>
+                      <div className="text-center font-medium text-red-500 dark:text-red-400  text-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                        LogOut
+                      </div>
+                    </div>
+                
+              </div>
+            </Drawer.Items>
           </Drawer>
         </div>
       </div>
